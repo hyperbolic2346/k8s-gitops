@@ -54,6 +54,7 @@ spec:
         className: internal
         annotations:
           hajimari.io/icon: mdi:zwave
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host zwave.${SECRET_DOMAIN}
             paths:
@@ -64,6 +65,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: zwave-js-ui-cert
     persistence:
       config:
         enabled: true

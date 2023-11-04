@@ -58,6 +58,7 @@ spec:
         ingressClassName: internal
         annotations:
           hajimari.io/enable: "false"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host0 www.${SECRET_DOMAIN}
             paths:
@@ -71,6 +72,7 @@ spec:
           - hosts:
               - *host0
               - *host1
+            secretName: hajimari-cert
     podAnnotations:
       configmap.reloader.stakater.com/reload: hajimari-settings
     persistence:
