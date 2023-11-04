@@ -49,8 +49,6 @@ spec:
         proxy-buffer-size: 16k
         ssl-protocols: TLSv1.3 TLSv1.2
         worker-processes: "auto"
-      extraArgs:
-        default-ssl-certificate: networking/wildcard-tls
       ingressClass: internal
       ingressClassResource:
         name: internal
