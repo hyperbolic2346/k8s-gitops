@@ -1,0 +1,105 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: movies
+spec:
+  storageClassName: ''
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: ${SECRET_FILESERV_MOVIE_PATH}
+    server: ${SECRET_FILESERV_IP}
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tv
+spec:
+  storageClassName: ''
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: ${SECRET_FILESERV_TV_PATH}
+    server: ${SECRET_FILESERV_IP}
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: incoming-sabnzbd
+spec:
+  storageClassName: ''
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: ${SECRET_FILESERV_INCOMING_PATH}
+    server: ${SECRET_FILESERV_IP}
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: incoming-mp3-sabnzbd
+spec:
+  storageClassName: ''
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: ${SECRET_FILESERV_INCOMING_MP3_PATH}
+    server: ${SECRET_FILESERV_IP}
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: incoming-movies-sabnzbd
+spec:
+  storageClassName: ''
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: ${SECRET_FILESERV_INCOMING_MOVIE_PATH}
+    server: ${SECRET_FILESERV_IP}
+  mountOptions:
+    - nfsvers=4.1
+    - nconnect=8
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072

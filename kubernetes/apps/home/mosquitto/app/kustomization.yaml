@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: home
+resources:
+  - ./pvc.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
+  - ./volsync.yaml
+configMapGenerator:
+  - name: mosquitto-configmap
+    files:
+      - ./configs/mosquitto.conf
+configurations:
+  - ./patches/kustomizeconfig.yaml
+generatorOptions:
+  disableNameSuffixHash: true

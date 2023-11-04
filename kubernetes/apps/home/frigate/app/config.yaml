@@ -1,0 +1,115 @@
+---
+mqtt:
+  host: 10.0.1.14
+  port: 8883
+  user: '{FRIGATE_MQTT_USER}'
+  password: '{FRIGATE_MQTT_PASSWORD}'
+  topic_prefix: frigate
+
+database:
+  path: /data/frigate.db
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+objects:
+  track:
+    - person
+    - car
+    - bus
+    - bear
+    - sheep
+    - cow
+    - dog
+    - cat
+
+record:
+  enabled: true
+  retain:
+    days: 0
+  events:
+    retain:
+      default: 30
+      objects:
+        bear: 3650
+
+birdseye:
+  enabled: true
+  # objects, motion, continuous
+  mode: objects
+snapshots:
+  enabled: true
+  retain:
+    default: 365
+    objects:
+      bear: 3650
+
+cameras:
+  # --
+  back-drive:
+    ffmpeg:
+      inputs:
+        - path: rtsp://10.0.1.1:7447/Oj6JuFE5mX5zBOHL
+          roles:
+            - detect
+        - path: rtsp://10.0.1.1:7447/iqLTysjs0mJIL0Mn
+          roles:
+            - record
+            - rtmp
+    motion:
+      mask:
+        - 0,365,0,0,172,0
+    zones:
+      back_drive:
+        coordinates: 174,254,332,54,1149,136,1062,350,884,292,488,362,270,470
+      left_edge:
+        coordinates: 0,647,0,404,168,290,264,475
+      right_edge:
+        coordinates: 1280,498,1280,171,1149,150,1058,336
+      yard:
+        coordinates: 1280,437,1093,345,753,308,441,398,0,635,0,720,1280,720
+  # --
+  front-door:
+    ffmpeg:
+      inputs:
+        - path: rtsps://10.0.1.1:7441/fGbT9roF3ehu1pD3?enableSrtp
+          roles:
+            - detect
+        - path: rtsps://10.0.1.1:7441/OOpy17C6MJpV4NQs?enableSrtp
+          roles:
+            - record
+            - rtmp
+  # --
+  gate:
+    ffmpeg:
+      inputs:
+        - path: rtsp://10.0.1.1:7447/t9w1bowAkyyxiKim
+          roles:
+            - detect
+        - path: rtsp://10.0.1.1:7447/1wbphRIgh1ZRJjhG
+          roles:
+            - record
+            - rtmp
+    zones:
+      wilson:
+        coordinates: 549,720,495,436,547,268,720,151,785,170,767,304,1280,520,1280,720
+      brigman:
+        coordinates: 497,245,327,720,0,720,172,486,375,233,544,134,695,140
+    objects:
+      filters:
+        person:
+          mask:
+            - 476,644,384,606,317,268,405,177,366,52,283,64,192,231,265,286,367,617,296,643,259,720,519,720
+  # --
+  gate-rear:
+    ffmpeg:
+      inputs:
+        - path: rtsp://10.0.1.1:7447/RxYUnH7TWc9B5bj8
+          roles:
+            - detect
+        - path: rtsp://10.0.1.1:7447/5yttyhAdUKP7k9E4
+          roles:
+            - rtmp
+            - record

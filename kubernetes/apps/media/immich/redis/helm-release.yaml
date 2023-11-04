@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.zinn.ca/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: immich-redis
+  namespace: media
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    image:
+      repository: public.ecr.aws/docker/library/redis
+      tag: 7.2.3
+    env:
+      REDIS_REPLICATION_MODE: master
+    envFrom:
+      - configMapRef:
+          name: immich-configmap
+    command: [redis-server]
+    service:
+      main:
+        ports:
+          http:
+            port: 6379
+    persistence:
+      data:
+        enabled: true
+        storageClass: ceph-ssd-xfs
+        size: 500Gi
+        accessMode: ReadWriteOnce
+        mountPath: /data

@@ -1,0 +1,62 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: gate
+  namespace: gate
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: gate-charts
+      version: '0.3'
+      sourceRef:
+        kind: HelmRepository
+        name: gate-charts
+        namespace: flux-system
+  values:
+    celery:
+      image: ${SECRET_DOCKER_USER}/celery_motion:latest
+      persistence:
+        enabled: true
+        existingClaim: security-camera
+    gate:
+      image: ${SECRET_DOCKER_USER}/gate:latest
+      persistence:
+        existingClaim: gate
+        securityClaim: security-camera
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 100m
+      clusterissuer: letsencrypt-production
+      hostname: gate.${SECRET_DOMAIN}
+    motion:
+      image: ${SECRET_DOCKER_USER}/motion:latest
+      motionNodePort: 9081
+      persistence:
+        enabled: true
+        existingClaim: security-camera
+    mysql:
+      mysqlAllowEmptyPassword: false
+      mysqlRootPassword: ${SECRET_GATE_MYSQL_PW}
+      persistence:
+        enabled: true
+        existingClaim: mysql
+      configurationFiles:
+        sanity.cnf: |-
+          [mysqld]
+          sql_mode = NO_ENGINE_SUBSTITUTION
+        time.cnf: |-
+          [mysqld]
+          default_time_zone=America/New_York
+    rabbitmq:
+      persistence:
+        enabled: true
+        accessMode: ReadWriteOnce
+        storageClass: ceph-ssd
+        size: 8Gi
+      auth:
+        password: ${SECRET_GATE_RABBITMQ_PW}
+        erlangCookie: ${SECRET_GATE_RABBITMQ_ERLANG_COOKIE}
+      replicaCount: 1

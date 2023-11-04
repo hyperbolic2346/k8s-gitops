@@ -1,0 +1,70 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: incoming-movies-sabnzbd
+  namespace: media
+spec:
+  storageClassName: ''
+  volumeName: incoming-movies-sabnzbd
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: incoming-mp3-sabnzbd
+  namespace: media
+spec:
+  storageClassName: ''
+  volumeName: incoming-mp3-sabnzbd
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: incoming-sabnzbd
+  namespace: media
+spec:
+  storageClassName: ''
+  volumeName: incoming-sabnzbd
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: movies
+  namespace: media
+spec:
+  storageClassName: ''
+  volumeName: movies
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: tv
+  namespace: media
+spec:
+  storageClassName: ''
+  volumeName: tv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti

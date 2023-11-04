@@ -1,0 +1,42 @@
+{
+  "files.associations": {
+    "*.json5": "jsonc",
+    "**/terraform/**/*.tf": "terraform",
+    "**/kubernetes/**/*.sops.toml": "plaintext"
+  },
+  "material-icon-theme.folders.associations": {
+    ".taskfiles": "utils",
+    "bootstrap": "import",
+    "charts": "kubernetes",
+    "hack": "scripts",
+    "repositories": "database",
+    "terraforms": "terraform",
+    "talos": "core",
+    "vars": "other",
+    // namespaces
+    "actions-runner-system": "robot",
+    "cert-manager": "guard",
+    "democratic-csi": "dump",
+    "external-secrets": "keys",
+    "flux-system": "ci",
+    "kube-system": "kubernetes",
+    "media": "video",
+    "monitoring": "event",
+    "networking": "connection",
+    "rook-ceph": "dump",
+    "security": "guard"
+  },
+  "editor.formatOnSave": false,
+  "editor.formatOnSaveMode": "file",
+  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontLigatures": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.bracketPairsHorizontal": true,
+  "editor.guides.highlightActiveBracketPair": true,
+  "editor.hover.delay": 1500,
+  "editor.stickyScroll.enabled": false,
+  "editor.rulers": [100],
+  "explorer.autoReveal": false,
+  "files.trimTrailingWhitespace": true
+}

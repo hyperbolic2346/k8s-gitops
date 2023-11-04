@@ -1,0 +1,279 @@
+---
+clusterName: &cluster k8s
+
+clusterPodNets:
+  - 10.244.0.0/16
+clusterSvcNets:
+  - 10.245.0.0/16
+
+endpoint: https://k8s.${domainName}:6443
+
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+talosVersion: v1.5.4
+# renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=kubernetes/kubernetes
+kubernetesVersion: 1.28.3
+
+additionalApiServerCertSans:
+  - ${clusterEndpointIP}
+
+additionalMachineCertSans:
+  - ${clusterEndpointIP}
+  - k8s.${domainName}
+
+cniConfig:
+  name: none
+
+nodes:
+  # nuc0
+  - hostname: nuc0.k8s.${domainName}
+    ipAddress: 10.0.14.7
+    installDisk: /dev/sda
+    controlPlane: true
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 88:ae:dd:08:ec:43
+        dhcp: true
+        vip:
+          ip: ${clusterEndpointIP}
+    nodeLabels: &cpLabels
+      topology.kubernetes.io/region: *cluster
+      node-role.kubernetes.io/control-plane: true
+
+  # nuc1
+  - hostname: nuc1.k8s.${domainName}
+    ipAddress: 10.0.14.8
+    installDisk: /dev/nvme0n1
+    controlPlane: true
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 88:ae:dd:0e:5b:a8
+        dhcp: true
+        vip:
+          ip: ${clusterEndpointIP}
+    nodeLabels: *cpLabels
+
+  # nuc2
+  - hostname: nuc2.k8s.${domainName}
+    ipAddress: 10.0.14.9
+    installDisk: /dev/nvme0n1
+    controlPlane: true
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 88:ae:dd:60:06:81
+        dhcp: true
+        vip:
+          ip: ${clusterEndpointIP}
+    nodeLabels: *cpLabels
+
+  # catbert
+  - hostname: catbert.k8s.${domainName}
+    ipAddress: 10.0.14.14
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata3/host2/target2:0:0/2:0:0:0/
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: e4:1d:2d:22:b8:d0
+        dhcp: true
+    nodeLabels: &workerLabels
+      node-role.kubernetes.io/worker: true
+      topology.kubernetes.io/region: *cluster
+
+  # dogbert
+  - hostname: dogbert.k8s.${domainName}
+    ipAddress: 10.0.14.13
+    installDisk: /dev/nvme0n1
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: ac:1f:6b:0a:4b:72
+        dhcp: true
+    nodeLabels: *workerLabels
+
+  # wally
+  - hostname: wally.k8s.${domainName}
+    ipAddress: 10.0.14.16
+    installDisk: /dev/sde
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: e4:1d:2d:2c:84:e0
+        dhcp: true
+    nodeLabels: *workerLabels
+
+  # phil
+  - hostname: phil.k8s.${domainName}
+    ipAddress: 10.0.14.17
+    installDisk: /dev/sdb
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: e4:1d:2d:7f:9f:e0
+        dhcp: true
+    nodeLabels: *workerLabels
+
+  # alice
+  - hostname: alice.k8s.${domainName}
+    ipAddress: 10.0.14.15
+    installDisk: /dev/sdb
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: e4:1d:2d:7e:af:f0
+        dhcp: true
+    nodeLabels: *workerLabels
+
+  # thing1
+  - hostname: thing1.k8s.${domainName}
+    ipAddress: 10.0.14.11
+    installDisk: /dev/sda
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: e4:1d:2d:2c:8b:30
+        dhcp: true
+    nodeLabels: *workerLabels
+
+  # thing2
+  - hostname: thing2.k8s.${domainName}
+    ipAddress: 10.0.14.10
+    installDisk: /dev/sda
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: e4:1d:2d:2b:61:30
+        dhcp: true
+    nodeLabels: *workerLabels
+
+  # work-pc
+  - hostname: work-pc.k8s.${domainName}
+    ipAddress: 10.0.14.12
+    installDisk: /dev/sdb
+    controlPlane: false
+    disableSearchDomain: true
+    nameservers:
+      - 10.0.4.1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: bc:30:5b:d8:a8:dd
+        dhcp: true
+    nodeLabels: *workerLabels
+
+controlPlane:
+  patches:
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - kube-system
+  inlinePatch:
+    cluster:
+      allowSchedulingOnMasters: false
+      proxy:
+        disabled: true
+    machine:
+      install:
+        image: ghcr.io/siderolabs/installer:v1.5.4
+        legacyBIOSSupport: true
+      features:
+        kubePrism:
+          enabled: true
+          port: 7445
+      sysctls:
+        fs.inotify.max_user_watches: 1048576
+        fs.inotify.max_user_instances: 8192
+      network:
+        extraHostEntries:
+          - ip: ${clusterEndpointIP}
+            aliases:
+              - k8s.${domainName}
+          - ip: 10.0.14.1
+            aliases:
+              - unifi.${domainName}
+      time:
+        disabled: false
+        servers:
+          - time.cloudflare.com
+      kubelet:
+        extraArgs:
+          feature-gates: GracefulNodeShutdown=true
+          rotate-server-certificates: true
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          path: /etc/cri/conf.d/20-customization.part
+          op: create
+
+worker:
+  inlinePatch:
+    machine:
+      install:
+        image: ghcr.io/siderolabs/installer:v1.5.4
+        legacyBIOSSupport: true
+      features:
+        kubePrism:
+          enabled: true
+          port: 7445
+      sysctls:
+        fs.inotify.max_user_watches: 1048576
+        fs.inotify.max_user_instances: 8192
+        vm.nr_hugepages: 1024
+      network:
+        extraHostEntries:
+          - ip: ${clusterEndpointIP}
+            aliases:
+              - k8s.${domainName}
+          - ip: 10.0.14.1
+            aliases:
+              - unifi.${domainName}
+      time:
+        disabled: false
+        servers:
+          - time.cloudflare.com
+      kubelet:
+        extraArgs:
+          feature-gates: GracefulNodeShutdown=true
+          rotate-server-certificates: true
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          path: /etc/cri/conf.d/20-customization.part
+          op: create

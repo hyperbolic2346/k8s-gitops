@@ -1,0 +1,42 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: gate
+  namespace: gate
+spec:
+  storageClassName: ''
+  volumeName: gate
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mysql
+  namespace: gate
+spec:
+  storageClassName: ''
+  volumeName: mysql
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: security-camera
+  namespace: gate
+spec:
+  storageClassName: ''
+  volumeName: security-camera
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti

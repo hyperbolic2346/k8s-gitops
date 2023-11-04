@@ -1,0 +1,143 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: home-assistant
+  namespace: brigman
+spec:
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.0.3
+      interval: 15m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 14.9
+            envFrom: &envFrom
+              - secretRef:
+                  name: home-assistant-secret
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/home-assistant
+              tag: 2023.11.0@sha256:c6711d617afe65530002a8bb2611cbc1b327cca5c3eacdf17dcc037562c74dc2
+            env:
+              TZ: ${TIMEZONE}
+              HASS_UNIT_SYSTEM: imperial
+              HASS_PURGE_KEEP_DAYS: 30
+              HASS_EXTERNAL_URL: https://brigman-hass.${SECRET_DOMAIN}
+              HASS_TRUSTED_PROXIES: ${CLUSTER_POD_IP_CIDR}
+            envFrom: *envFrom
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 500m
+                memory: 100M
+                hugepages-2Mi: 500Mi
+              limits:
+                cpu: 2500m
+                memory: 750M
+                hugepages-2Mi: 500Mi
+          codeserver:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.18.0@sha256:29267847d68332a28d249bd5235715402b144a3903b921da0a1962173aef10b1
+              pullPolicy: IfNotPresent
+            env:
+              TZ: ${TIMEZONE}
+            workingDir: /config
+            args:
+              - --auth
+              - none
+              - --user-data-dir
+              - /config/.vscode
+              - --extensions-dir
+              - /config/.vscode
+              - --port
+              - "12321"
+            volumeMounts:
+              - name: config
+                mountPath: /config
+    service:
+      main:
+        type: ClusterIP
+        ports:
+          http:
+            port: 8123
+      codeserver:
+        type: ClusterIP
+        controller: main
+        ports:
+          http:
+            enabled: true
+            port: 12321
+            protocol: TCP
+            targetPort: 12321
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          hajimari.io/icon: mdi:home-assistant
+          nginx.org/websocket-services: home-assistant
+        hosts:
+          - host: &host brigman-hass.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+      codeserver:
+        enabled: true
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: http://oauth2-proxy.networking.svc.cluster.local/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: ${SECRET_AUTH_URL}
+        hosts:
+          - host: &host brigman-hass-code.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: codeserver
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        enabled: true
+        existingClaim: home-assistant-config

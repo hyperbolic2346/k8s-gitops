@@ -1,0 +1,83 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: zwave-js-ui
+  namespace: home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.0.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: zwavejs/zwave-js-ui
+              tag: 9.3.1
+              pullPolicy: IfNotPresent
+            env:
+              TZ: ${TIMEZONE}
+            resources:
+              requests:
+                smarter-devices/ttyACM0: 1
+                cpu: 10m
+                memory: 100M
+              limits:
+                smarter-devices/ttyACM0: 1
+                memory: 256M
+        pod:
+          nodeSelector:
+            aeotec.feature.node.kubernetes.io/zwave: "true"
+    ingress:
+      main:
+        enabled: true
+        className: internal
+        annotations:
+          hajimari.io/icon: mdi:zwave
+        hosts:
+          - host: &host zwave.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        enabled: true
+        existingClaim: zwave-js-ui-config
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    resources:
+      requests:
+        smarter-devices/ttyACM0: 1
+        cpu: 10m
+        memory: 100M
+      limits:
+        smarter-devices/ttyACM0: 1
+        memory: 256M

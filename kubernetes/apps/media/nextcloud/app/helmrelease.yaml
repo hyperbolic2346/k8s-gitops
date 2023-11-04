@@ -1,0 +1,183 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app nextcloud
+  namespace: media
+spec:
+  releaseName: nextcloud
+  interval: 10m
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  chart:
+    spec:
+      chart: nextcloud
+      version: 4.3.6
+      sourceRef:
+        kind: HelmRepository
+        name: nextcloud-charts
+        namespace: flux-system
+      interval: 60m
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    fullnameOverride: *app
+    image:
+      repository: nextcloud
+      tag: 27.1.3-fpm-alpine
+      flavor: fpm-alpine
+    ingress:
+      enabled: true
+      tls:
+        - hosts:
+            - &host nextcloud.${SECRET_DOMAIN}
+          secretName: netcloud-cert
+      annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: 4G
+        nginx.ingress.kubernetes.io/proxy-buffering: "off"
+        nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+        nginx.ingress.kubernetes.io/server-snippet: |
+          server_tokens off;
+          location ^~ /.well-known {
+            location = /.well-known/carddav { return 301 /remote.php/dav/; }
+            location = /.well-known/caldav { return 301 /remote.php/dav/; }
+            location = /.well-known/acme-challenge { try_files $uri $uri/ =404; }
+            location = /.well-known/pki-validation { try_files $uri $uri/ =404; }
+            return 301 /index.php$request_uri;
+          }
+          location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:$|/)  { return 404; }
+          location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/ingress.class: nginx
+    nextcloud:
+      host: *host
+      username: ${SECRET_NEXTCLOUD_USERNAME}
+      password: ${SECRET_NEXTCLOUD_DEFAULT_PW}
+      configs:
+        proxy.config.php: |-
+          <?php
+          $CONFIG = array(
+            'trusted_proxies' => array(
+              0 => '127.0.0.1',
+              1 => '10.0.0.0/8',
+            ),
+            'forwarded_for_headers' => array('HTTP_X_FORWARDED_FOR'),
+            'overwrite.cli.url' => 'https://nextcloud.${SECRET_DOMAIN}',
+            'overwritehost' => 'nextcloud.${SECRET_DOMAIN}',
+            'overwriteprotocol' => 'https',
+          );
+          ?>
+      mail:
+        enabled: true
+        fromAddress: ${SECRET_NEXTCLOUD_FROM_EMAIL}
+        domain: gmail.com
+        smtp:
+          host: smtp.gmail.com
+          secure: ssl
+          port: 587
+          aythtype: LOGIN
+          name: ${SECRET_NEXTCLOUD_FROM_EMAIL}
+          password: ${SECRET_NEXTCLOUD_FROM_EMAIL_PW}
+      extraVolumes:
+        - name: hugepage
+          emptyDir:
+            medium: HugePages-2Mi
+      extraVolumeMounts:
+        - name: hugepage
+          mountPath: /dev/hugepages
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+        hugepages-2Mi: 250Mi
+      limits:
+        cpu: 2000m
+        memory: 5Gi
+        hugepages-2Mi: 250Mi
+    nginx:
+      enabled: false
+    internalDatabase:
+      enabled: false
+      name: nextcloud
+    externalDatabase:
+      enabled: true
+      type: postgresql
+      password: ${SECRET_NEXTCLOUD_POSTGRESQL_PW}
+    mariadb:
+      enabled: false
+    redis:
+      enabled: false
+    postgresql:
+      enabled: true
+      image:
+        tag: 16.0.0-debian-11-r13
+      global:
+        postgresql:
+          auth:
+            password: ${SECRET_NEXTCLOUD_POSTGRESQL_PW}
+      primary:
+        persistence:
+          enabled: true
+          storageClass: ceph-ssd
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+            hugepages-2Mi: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+            hugepages-2Mi: 256Mi
+    cronjob:
+      enabled: true
+    service:
+      type: ClusterIP
+      port: 8080
+      loadBalancerIP: nil
+
+    persistence:
+      # Nextcloud Data (/var/www/html)
+      enabled: true
+      existingClaim: nextcloud
+
+    ## Liveness and readiness probe values
+    ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+    ##
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+      successThreshold: 1
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+      successThreshold: 1
+    startupProbe:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 30
+      successThreshold: 1
+
+    hpa:
+      enabled: false
+      cputhreshold: 60
+      minPods: 1
+      maxPods: 10
+
+    nodeSelector: {}
+
+    tolerations: []
+
+    affinity: {}
