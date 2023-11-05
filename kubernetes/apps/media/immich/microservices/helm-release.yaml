@@ -39,7 +39,7 @@ spec:
         configmap.reloader.stakater.com/reload: &configMap immich-configmap
     image:
       repository: ghcr.io/immich-app/immich-server
-      tag: v1.83.0
+      tag: v1.84.0
     args: [start-microservices.sh]
     envFrom:
       - configMapRef:
