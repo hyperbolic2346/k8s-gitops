@@ -117,6 +117,7 @@ spec:
         className: internal
         annotations:
           hajimari.io/enable: "false"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host onepassword-connect.${SECRET_DOMAIN}
             paths:
@@ -127,6 +128,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: onepassword-connect-cert
     persistence:
       shared:
         type: emptyDir
