@@ -35,11 +35,13 @@ spec:
         annotations:
           hajimari.io/appName: Rook
           hajimari.io/icon: mdi:chess-rook
+          cert-manager.io/cluster-issuer: letsencrypt-production
         host:
           name: &host rook.${SECRET_DOMAIN}
           path: /
         tls:
-          - hosts:
+          - secretName: rook-tls
+            hosts:
               - *host
     toolbox:
       enabled: true
