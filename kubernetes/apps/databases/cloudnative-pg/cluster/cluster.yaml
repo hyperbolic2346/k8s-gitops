@@ -23,7 +23,7 @@ spec:
   resources:
     requests:
       cpu: 500m
-      memory: 500M
+      memory: 1Gi
       hugepages-2Mi: 500Mi
     limits:
       memory: 2Gi
