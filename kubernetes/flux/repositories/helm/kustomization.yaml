@@ -10,6 +10,7 @@ resources:
   - ./cilium-charts.yaml
   - ./cloudnative-pg-charts.yaml
   - ./external-secrets-charts.yaml
+  - ./gate-charts.yaml
   - ./grafana-charts.yaml
   - ./hajimari-charts.yaml
   - ./ingress-nginx-charts.yaml

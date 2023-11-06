@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: gate-charts
+  namespace: flux-system
+spec:
+  interval: 60m
+  url: https://hyperbolic2346.github.io/gate-charts
+  timeout: 3m
