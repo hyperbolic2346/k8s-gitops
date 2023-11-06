@@ -74,6 +74,7 @@ spec:
     ingress:
       main:
         enabled: true
+        className: external
         annotations:
           hajimari.io/icon: mdi:home-assistant
           nginx.org/websocket-services: home-assistant
