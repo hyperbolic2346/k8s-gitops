@@ -94,7 +94,7 @@ nodes:
   # dogbert
   - hostname: dogbert.k8s.${domainName}
     ipAddress: 10.0.14.13
-    installDisk: /dev/nvme0n1
+    installDisk: /dev/sdb
     controlPlane: false
     disableSearchDomain: true
     nameservers:
@@ -122,7 +122,7 @@ nodes:
   # phil
   - hostname: phil.k8s.${domainName}
     ipAddress: 10.0.14.17
-    installDisk: /dev/sdb
+    installDisk: /dev/sde
     controlPlane: false
     disableSearchDomain: true
     nameservers:
