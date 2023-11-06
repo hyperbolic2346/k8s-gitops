@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: gate-charts
-      version: '0.3'
+      version: '0.4'
       sourceRef:
         kind: HelmRepository
         name: gate-charts
@@ -31,6 +31,8 @@ spec:
           cpu: 100m
       clusterissuer: letsencrypt-production
       hostname: gate.${SECRET_DOMAIN}
+      ingressClassName: external
+      ingressClass: nginx
     motion:
       image: ${SECRET_DOCKER_USER}/motion:latest
       motionNodePort: 9081
