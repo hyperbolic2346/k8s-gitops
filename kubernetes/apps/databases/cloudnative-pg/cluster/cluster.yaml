@@ -9,6 +9,9 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16.0-10
   enableSuperuserAccess: true
   primaryUpdateStrategy: unsupervised
+  env:
+  - name: TZ
+    value: ${TIMEZONE}
   storage:
     size: 25Gi
     storageClass: ${CLUSTER_STORAGE_BLOCK_SSD}
