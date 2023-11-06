@@ -14,7 +14,6 @@
     // namespaces
     "actions-runner-system": "robot",
     "cert-manager": "guard",
-    "democratic-csi": "dump",
     "external-secrets": "keys",
     "flux-system": "ci",
     "kube-system": "kubernetes",

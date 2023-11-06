@@ -24,7 +24,7 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-democratic-csi-local-hostpath
+    - name: cluster-apps-rook-ceph-cluster
   path: ./kubernetes/apps/databases/cloudnative-pg/cluster
   prune: true
   sourceRef:
