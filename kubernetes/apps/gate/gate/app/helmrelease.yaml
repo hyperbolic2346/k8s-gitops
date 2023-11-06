@@ -32,7 +32,7 @@ spec:
       clusterissuer: letsencrypt-production
       hostname: gate.${SECRET_DOMAIN}
       ingressClassName: external
-      ingressClass: nginx
+      ingressClass: ''
     motion:
       image: ${SECRET_DOCKER_USER}/motion:latest
       motionNodePort: 9081

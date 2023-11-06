@@ -5,10 +5,10 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/ingress.class: nginx
-    className: internal
   name: gatecam
   namespace: gate
 spec:
+  ingressClassName: external
   tls:
     - hosts:
         - gatecam.${SECRET_DOMAIN}
