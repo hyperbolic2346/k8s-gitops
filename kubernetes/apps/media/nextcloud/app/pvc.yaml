@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: nextcloud-data
   namespace: media
+  labels:
+    app.kubernetes.io/name: nextcloud
 spec:
   accessModes:
     - ReadWriteOnce
@@ -17,6 +19,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: nextcloud-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: nextcloud
 spec:
   accessModes:
     - ReadWriteOnce

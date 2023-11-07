@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: appdaemon-config
   namespace: home
+  labels:
+    app.kubernetes.io/name: appdaemon
 spec:
   accessModes:
     - ReadWriteOnce

@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: frigate-data
   namespace: home
+  labels:
+    app.kubernetes.io/name: frigate
 spec:
   accessModes:
     - ReadWriteOnce
@@ -17,6 +19,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: frigate-media
   namespace: home
+  labels:
+    app.kubernetes.io/name: frigate
 spec:
   accessModes:
     - ReadWriteOnce

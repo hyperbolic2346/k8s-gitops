@@ -106,7 +106,7 @@ tasks:
           if [[ -n $(kubectl -n {{.namespace}} get deployment --no-headers -l "app.kubernetes.io/name=$app") ]]; then
             echo "deployments.apps/$app" && exit 0
           fi
-          echo "statefulsets.apps/$app"
+          echo "deployments.apps/radarr"
     env: *task-vars
     preconditions:
       - sh: test -f {{.wipeJobTemplate}}
