@@ -26,6 +26,12 @@ spec:
       DASH_URL: http://$HOSTNAME:5050
       # TOKEN:
 
+    service:
+      main:
+        ports:
+          http:
+            port: 5050
+
     persistence:
       config:
         enabled: true
