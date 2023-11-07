@@ -2,14 +2,14 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: home-assistant-restic
+  name: brigman-home-assistant-restic
   namespace: brigman
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect
   target:
-    name: home-assistant-restic-secret
+    name: brigman-home-assistant-restic-secret
     creationPolicy: Owner
     template:
       engineVersion: v2
@@ -25,16 +25,16 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: home-assistant
+  name: brigman-home-assistant
   namespace: brigman
 spec:
-  sourcePVC: home-assistant-config
+  sourcePVC: brigman-home-assistant-config
   trigger:
     schedule: "0 8 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 10
-    repository: home-assistant-restic-secret
+    repository: brigman-home-assistant-restic-secret
     cacheCapacity: 8Gi
     volumeSnapshotClassName: ${CLUSTER_SNAPSHOT_BLOCK_SSD}
     storageClassName: ${CLUSTER_STORAGE_BLOCK_SSD}

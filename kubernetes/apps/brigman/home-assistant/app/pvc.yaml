@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: home-assistant-config
+  name: brigman-home-assistant-config
   namespace: brigman
 spec:
   accessModes:
