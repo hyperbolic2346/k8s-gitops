@@ -12,11 +12,12 @@ spec:
       version: 8.4.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-helm-charts
         namespace: flux-system
+        version: 1.5.1
   values:
     image:
-      repository: acockburn/appdaemon
+      repository: docker.io/acockburn/appdaemon
       tag: 4.4.2
 
     env:
@@ -67,5 +68,3 @@ spec:
         volumeMounts:
           - name: config
             mountPath: /config
-    podAnnotations:
-      backup.velero.io/backup-volumes: config
