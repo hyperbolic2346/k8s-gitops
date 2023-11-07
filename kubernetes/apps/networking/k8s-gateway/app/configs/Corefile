@@ -1,0 +1,33 @@
+.:53 {
+    log
+    errors
+    health {
+        lameduck 5s
+    }
+    ready
+    prometheus 0.0.0.0:9153
+    hosts {
+        10.0.14.7 nuc0.k8s.${SECRET_DOMAIN}
+        10.0.14.8 nuc1.k8s.${SECRET_DOMAIN}
+        10.0.14.9 nuc2.k8s.${SECRET_DOMAIN}
+        10.0.14.13 dogbert.k8s.${SECRET_DOMAIN}
+        10.0.14.14 catbert.k8s.${SECRET_DOMAIN}
+        10.0.14.15 alice.k8s.${SECRET_DOMAIN}
+        10.0.14.16 wally.k8s.${SECRET_DOMAIN}
+        10.0.14.17 phil.k8s.${SECRET_DOMAIN}
+        fallthrough ${SECRET_DOMAIN}
+    }
+    k8s_gateway ${SECRET_DOMAIN} {
+        apex k8s-gateway.networking
+        resources Ingress Service
+        fallthrough ${SECRET_DOMAIN}
+    }
+    forward ${SECRET_DOMAIN} tls://8.8.8.8 tls://8.8.4.4 {
+        tls_servername dns.google.com
+        health_check 5s
+    }
+    cache 30
+    loop
+    reload
+    loadbalance
+}

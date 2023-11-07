@@ -6,3 +6,4 @@ resources:
   - ./blocky/ks.yaml
   - ./echo-server/ks.yaml
   - ./ingress-nginx/ks.yaml
+  - /.k8s-gateway/ks.yaml
