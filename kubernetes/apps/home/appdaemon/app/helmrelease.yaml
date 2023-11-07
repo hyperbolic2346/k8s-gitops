@@ -8,7 +8,7 @@ spec:
   interval: 10m
   chart:
     spec:
-      chart: appdaemon
+      chart: app-template
       version: 1.5.1
       sourceRef:
         kind: HelmRepository
