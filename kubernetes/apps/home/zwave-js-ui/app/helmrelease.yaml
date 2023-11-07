@@ -61,7 +61,7 @@ spec:
               - path: /
                 service:
                   name: main
-                  port: &port http
+                  port: http
         tls:
           - hosts:
               - *host
@@ -74,7 +74,7 @@ spec:
       main:
         ports:
           http:
-            port: *port
+            port: 8091
     resources:
       requests:
         smarter-devices/ttyACM0: 1
