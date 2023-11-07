@@ -9,12 +9,11 @@ spec:
   chart:
     spec:
       chart: appdaemon
-      version: 8.4.2
+      version: 1.5.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-helm-charts
         namespace: flux-system
-        version: 1.5.1
   values:
     image:
       repository: docker.io/acockburn/appdaemon
