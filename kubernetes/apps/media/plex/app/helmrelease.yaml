@@ -36,15 +36,11 @@ spec:
               TZ: ${TIMEZONE}
             resources:
               requests:
-                gpu.intel.com/i915: 1
                 cpu: 1000m
                 memory: 2000M
               limits:
-                gpu.intel.com/i915: 1
                 memory: 10000M
         pod:
-          nodeSelector:
-            intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
             runAsUser: 568
             runAsGroup: 568
