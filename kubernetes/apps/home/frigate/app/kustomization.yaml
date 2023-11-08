@@ -5,6 +5,7 @@ namespace: home
 resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
+  - ./volsync.yaml
 configMapGenerator:
   - name: frigate-configmap
     namespace: home
