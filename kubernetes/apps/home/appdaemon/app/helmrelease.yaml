@@ -48,14 +48,14 @@ spec:
         image:
           repository: codercom/code-server
           tag: 4.18.0
-        workingDir: /config
+        workingDir: /conf
         args:
           - --auth
           - none
           - --user-data-dir
-          - /config/.vscode
+          - /conf/.vscode
           - --extensions-dir
-          - /config/.vscode
+          - /conf/.vscode
         ingress:
           enabled: true
           annotations:
@@ -73,5 +73,5 @@ spec:
             - hosts:
                 - appdaemon-code.${SECRET_DOMAIN}
         volumeMounts:
-          - name: config
-            mountPath: /config
+          - name: conf
+            mountPath: /conf
