@@ -34,6 +34,8 @@ spec:
 
     persistence:
       config:
+        enabled: false
+      conf:
         enabled: true
         existingClaim: appdaemon-config
 
