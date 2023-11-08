@@ -111,4 +111,4 @@ spec:
         # -- (bool) Privileged securityContext may be required if USB devices are accessed directly through the host machine
         privileged: true
       nodeSelector:
-        tpu: 'google-coral'
+        google.feature.node.kubernetes.io/coral: 'true'
