@@ -10,7 +10,7 @@ configMapGenerator:
   - name: frigate-configmap
     namespace: home
     files:
-      - ./configs/frigate.yaml
+      - ./configs/config.yml
   - name: frigate-gatus-ep
     files:
       - ./configs/gatus.yaml
