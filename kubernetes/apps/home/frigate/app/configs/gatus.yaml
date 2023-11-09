@@ -1,0 +1,8 @@
+endpoints:
+  - name: frigate
+    url: https://frigate.${SECRET_DOMAIN}
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: pushover

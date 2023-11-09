@@ -53,13 +53,17 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
+            securityContext:
+              privileged: true
             resources:
               requests:
                 memory: 1000Mi
                 cpu: 500m
               limits:
                 memory: 6000Mi
-
+        pod:
+          nodeSelector:
+            google.feature.node.kubernetes.io/coral: "true"
     ingress:
       main:
         annotations:
@@ -99,6 +103,9 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /dev/bus/usb
+        hostPathType: Directory
+        globalMounts:
+          - path: /dev/bus/usb
       cache:
         enabled: true
         type: emptyDir
@@ -106,9 +113,3 @@ spec:
         sizeLimit: 4Gi
         globalMounts:
           - path: /dev/shm
-    defaultPodOptions:
-      securityContext:
-        # -- (bool) Privileged securityContext may be required if USB devices are accessed directly through the host machine
-        privileged: true
-      nodeSelector:
-        google.feature.node.kubernetes.io/coral: 'true'
