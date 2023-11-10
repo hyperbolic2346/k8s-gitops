@@ -58,6 +58,7 @@ spec:
           hajimari.io/icon: mdi:plex
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host plex.${SECRET_DOMAIN}
             paths:
@@ -68,6 +69,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: plex-cert
     persistence:
       config:
         enabled: true

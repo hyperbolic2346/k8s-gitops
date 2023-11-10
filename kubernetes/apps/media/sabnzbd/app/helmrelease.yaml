@@ -82,6 +82,7 @@ spec:
         className: internal
         annotations:
           hajimari.io/icon: mdi:download
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host sabnzbd.${SECRET_DOMAIN}
             paths:
@@ -92,6 +93,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: sabnzbd-cert
     persistence:
       config:
         enabled: true
