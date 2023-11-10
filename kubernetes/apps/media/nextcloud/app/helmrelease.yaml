@@ -143,7 +143,11 @@ spec:
     persistence:
       # Nextcloud Data (/var/www/html)
       enabled: true
-      existingClaim: nextcloud
+      existingClaim: nextcloud-config
+
+      nextcloudData:
+        enabled: true
+        existingClaim: nextcloud-data
 
     ## Liveness and readiness probe values
     ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
