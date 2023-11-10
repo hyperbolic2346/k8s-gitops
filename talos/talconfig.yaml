@@ -207,7 +207,7 @@ controlPlane:
         disabled: true
     machine:
       install:
-        image: ghcr.io/siderolabs/installer:v1.5.4
+        image: ghcr.io/siderolabs/installer:v1.5.5
         legacyBIOSSupport: true
       features:
         kubePrism:
@@ -244,7 +244,7 @@ worker:
   inlinePatch:
     machine:
       install:
-        image: ghcr.io/siderolabs/installer:v1.5.4
+        image: ghcr.io/siderolabs/installer:v1.5.5
         legacyBIOSSupport: true
       features:
         kubePrism:
