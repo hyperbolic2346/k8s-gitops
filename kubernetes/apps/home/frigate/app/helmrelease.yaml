@@ -90,8 +90,7 @@ spec:
         type: configMap
         name: frigate-configmap
         globalMounts:
-          - path: /config/config.yml
-            subPath: config.yml
+          - path: /config
             readOnly: true
       data:
         enabled: true
