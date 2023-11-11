@@ -84,6 +84,8 @@ spec:
         existingClaim: tv
     service:
       main:
+        type: LoadBalancer
+        externalTrafficPolicy: Local
         ports:
           http:
             port: 32400
