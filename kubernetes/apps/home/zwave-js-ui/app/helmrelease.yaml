@@ -70,6 +70,8 @@ spec:
       config:
         enabled: true
         existingClaim: zwave-js-ui-config
+        globalMounts:
+          - path: /usr/src/app/store
     service:
       main:
         ports:
