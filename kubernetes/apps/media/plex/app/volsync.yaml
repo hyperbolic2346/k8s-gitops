@@ -35,7 +35,7 @@ spec:
     copyMethod: Snapshot
     pruneIntervalDays: 10
     repository: plex-restic-secret
-    cacheCapacity: 8Gi
+    cacheCapacity: 20Gi
     volumeSnapshotClassName: ${CLUSTER_SNAPSHOT_BLOCK_SSD}
     storageClassName: ${CLUSTER_STORAGE_BLOCK_SSD}
     cacheStorageClassName: ${CLUSTER_STORAGE_BLOCK_SSD}
