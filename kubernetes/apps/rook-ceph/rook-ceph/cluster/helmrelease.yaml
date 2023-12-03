@@ -114,7 +114,7 @@ spec:
           deviceClass: ssd
         storageClass:
           enabled: false
-          name: ${CLUSTER_STORAGE_BLOCK_SSD}
+          name: ${CLUSTER_STORAGE_BLOCK_SSD_EXT4}
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
@@ -136,7 +136,7 @@ spec:
           deviceClass: hdd
         storageClass:
           enabled: true
-          name: ${CLUSTER_STORAGE_BLOCK_HDD}
+          name: ${CLUSTER_STORAGE_BLOCK_HDD_EXT4}
           isDefault: false
           reclaimPolicy: Delete
           allowVolumeExpansion: true
