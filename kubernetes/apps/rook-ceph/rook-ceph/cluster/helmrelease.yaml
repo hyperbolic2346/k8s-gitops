@@ -113,7 +113,7 @@ spec:
             size: 3
           deviceClass: ssd
         storageClass:
-          enabled: false
+          enabled: true
           name: ${CLUSTER_STORAGE_BLOCK_SSD_EXT4}
           isDefault: true
           reclaimPolicy: Delete
