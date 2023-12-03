@@ -115,7 +115,7 @@ spec:
         storageClass:
           enabled: true
           name: ${CLUSTER_STORAGE_BLOCK_SSD_EXT4}
-          isDefault: true
+          isDefault: false
           reclaimPolicy: Delete
           allowVolumeExpansion: true
           parameters:
