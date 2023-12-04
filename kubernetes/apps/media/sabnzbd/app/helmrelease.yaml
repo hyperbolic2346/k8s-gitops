@@ -66,6 +66,7 @@ spec:
               requests:
                 cpu: 500m
                 memory: 4096M
+                ephemeral-storage: 150Gi
               limits:
                 memory: 8192M
         pod:
