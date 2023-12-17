@@ -36,7 +36,7 @@ spec:
         configmap.reloader.stakater.com/reload: immich-configmap
     image:
       repository: ghcr.io/immich-app/immich-machine-learning
-      tag: v1.91.2
+      tag: v1.91.3
     envFrom:
       - configMapRef:
           name: immich-configmap
