@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: zwave-js-ui
@@ -33,7 +33,7 @@ spec:
           main:
             image:
               repository: zwavejs/zwave-js-ui
-              tag: 9.5.1
+              tag: 9.6.0
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}

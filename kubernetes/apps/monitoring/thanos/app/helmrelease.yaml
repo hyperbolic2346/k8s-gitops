@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: thanos
@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: thanos
-      version: 12.16.1
+      version: 12.18.0
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
@@ -29,7 +29,7 @@ spec:
     image:
       registry: quay.io
       repository: thanos/thanos
-      tag: v0.32.5
+      tag: v0.33.0
     objstoreConfig:
       type: s3
       config:

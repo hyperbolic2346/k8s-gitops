@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: &app karma
@@ -33,7 +33,7 @@ spec:
           main:
             image:
               repository: ghcr.io/prymitive/karma
-              tag: v0.117
+              tag: v0.118
             env:
               ALERTMANAGER_URI: http://alertmanager-operated.monitoring.svc.cluster.local:9093
             resources:

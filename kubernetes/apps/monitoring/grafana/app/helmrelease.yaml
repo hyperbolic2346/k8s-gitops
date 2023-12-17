@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: grafana
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: grafana
-      version: 7.0.11
+      version: 7.0.17
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
@@ -27,7 +27,7 @@ spec:
   values:
     extraInitContainers:
       - name: init-db
-        image: ghcr.io/onedr0p/postgres-init:15.5
+        image: ghcr.io/onedr0p/postgres-init:16.1
         imagePullPolicy: IfNotPresent
         envFrom:
           - secretRef:
