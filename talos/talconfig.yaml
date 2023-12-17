@@ -149,7 +149,7 @@ nodes:
 
   # thing1
   - hostname: thing1.k8s.${domainName}
-    ipAddress: 10.0.14.11
+    ipAddress: 10.0.14.10
     installDisk: /dev/sda
     controlPlane: false
     disableSearchDomain: true
@@ -163,7 +163,7 @@ nodes:
 
   # thing2
   - hostname: thing2.k8s.${domainName}
-    ipAddress: 10.0.14.10
+    ipAddress: 10.0.14.11
     installDisk: /dev/sda
     controlPlane: false
     disableSearchDomain: true
