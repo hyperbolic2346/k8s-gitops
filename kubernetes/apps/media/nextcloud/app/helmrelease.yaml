@@ -31,7 +31,7 @@ spec:
               repository: nextcloud
               tag: 28.0.0-apache
             command: ["/usr/bin/su"]
-            args: ["www-data", "-s", "/bin/bash", "-c", "occ upgrade"]
+            args: ["www-data", "-s", "/bin/bash", "-c", "/usr/src/nextcloud/occ upgrade"]
             env:
               TZ: "${TIMEZONE}"
               OVERWRITEPROTOCOL: "https"
@@ -42,7 +42,7 @@ spec:
               repository: nextcloud
               tag: 28.0.0-apache
             command: ["/usr/bin/su"]
-            args: ["www-data", "-s", "/bin/bash", "-c", "occ app:update --all"]
+            args: ["www-data", "-s", "/bin/bash", "-c", "/usr/src/nextcloud/occ app:update --all"]
             env:
               TZ: "${TIMEZONE}"
               OVERWRITEPROTOCOL: "https"
