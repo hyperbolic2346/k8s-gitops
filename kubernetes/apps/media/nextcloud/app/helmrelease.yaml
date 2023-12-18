@@ -5,7 +5,7 @@ metadata:
   name: &app nextcloud
   namespace: *app
 spec:
-  timeout: 1h
+  interval: 60m
   chart:
     spec:
       chart: app-template
