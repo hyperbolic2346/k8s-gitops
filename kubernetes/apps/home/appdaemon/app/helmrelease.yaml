@@ -20,7 +20,7 @@ spec:
       tag: 4.4.2
 
     env:
-      TZ: America/New_York
+      TZ: ${TIMEZONE}
       ELEVATION: ${SECRET_ALTITUDE}
       HA_URL: http://home-assistant:8123
       DASH_URL: http://$HOSTNAME:5050
