@@ -55,7 +55,8 @@ spec:
               tag: 28.0.0-apache
             env: &env
               TZ: ${TIMEZONE}
-              REDIS_HOST: "redis-master"
+              # https://github.com/nextcloud/docker/issues/763
+              #REDIS_HOST: "redis-master"
               NC_DOMAIN: &host nextcloud.${SECRET_DOMAIN}
               NEXTCLOUD_DATA_DIR: /data
               NEXTCLOUD_TRUSTED_DOMAINS: *host
