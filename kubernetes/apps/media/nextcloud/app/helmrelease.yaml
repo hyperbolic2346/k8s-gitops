@@ -119,6 +119,8 @@ spec:
       config:
         enabled: true
         existingClaim: nextcloud-config
-      nextcloudData:
+        mountPath: /var/www/html/config
+      nextcloud-data:
         enabled: true
         existingClaim: nextcloud-data
+        mountPath: /var/www/html/data
