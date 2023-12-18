@@ -3,185 +3,122 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: &app nextcloud
-  namespace: media
+  namespace: *app
 spec:
-  releaseName: nextcloud
-  interval: 10m
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+  timeout: 1h
   chart:
     spec:
-      chart: nextcloud
-      version: 4.5.8
+      chart: app-template
+      version: 2.4.0
       sourceRef:
+        name: bjw-s
         kind: HelmRepository
-        name: nextcloud-charts
         namespace: flux-system
-      interval: 60m
-  install:
-    remediation:
-      retries: 5
-  upgrade:
-    remediation:
-      retries: 5
   values:
-    fullnameOverride: *app
-    image:
-      repository: nextcloud
-      tag: 28.0.0-fpm-alpine
-      flavor: fpm-alpine
-    ingress:
-      enabled: true
-      tls:
-        - hosts:
-            - &host nextcloud.${SECRET_DOMAIN}
-          secretName: netcloud-cert
-      annotations:
-        nginx.ingress.kubernetes.io/proxy-body-size: 4G
-        nginx.ingress.kubernetes.io/proxy-buffering: "off"
-        nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-        nginx.ingress.kubernetes.io/server-snippet: |
-          server_tokens off;
-          location ^~ /.well-known {
-            location = /.well-known/carddav { return 301 /remote.php/dav/; }
-            location = /.well-known/caldav { return 301 /remote.php/dav/; }
-            location = /.well-known/acme-challenge { try_files $uri $uri/ =404; }
-            location = /.well-known/pki-validation { try_files $uri $uri/ =404; }
-            return 301 /index.php$request_uri;
-          }
-          location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:$|/)  { return 404; }
-          location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: nginx
-    nextcloud:
-      host: *host
-      username: ${SECRET_NEXTCLOUD_USERNAME}
-      password: ${SECRET_NEXTCLOUD_DEFAULT_PW}
-      configs:
-        proxy.config.php: |-
-          <?php
-          $CONFIG = array(
-            'trusted_proxies' => array(
-              0 => '127.0.0.1',
-              1 => '10.0.0.0/8',
-            ),
-            'forwarded_for_headers' => array('HTTP_X_FORWARDED_FOR'),
-            'overwrite.cli.url' => 'https://nextcloud.${SECRET_DOMAIN}',
-            'overwritehost' => 'nextcloud.${SECRET_DOMAIN}',
-            'overwriteprotocol' => 'https',
-          );
-          ?>
-      mail:
-        enabled: true
-        fromAddress: ${SECRET_NEXTCLOUD_FROM_EMAIL}
-        domain: gmail.com
-        smtp:
-          host: smtp.gmail.com
-          secure: ssl
-          port: 587
-          aythtype: LOGIN
-          name: ${SECRET_NEXTCLOUD_FROM_EMAIL}
-          password: ${SECRET_NEXTCLOUD_FROM_EMAIL_PW}
-      extraVolumes:
-        - name: hugepage
-          emptyDir:
-            medium: HugePages-2Mi
-      extraVolumeMounts:
-        - name: hugepage
-          mountPath: /dev/hugepages
-    resources:
-      requests:
-        cpu: 1000m
-        memory: 2Gi
-        hugepages-2Mi: 250Mi
-      limits:
-        cpu: 2000m
-        memory: 5Gi
-        hugepages-2Mi: 250Mi
-    nginx:
-      enabled: false
-    internalDatabase:
-      enabled: false
-      name: nextcloud
-    externalDatabase:
-      enabled: true
-      type: postgresql
-      password: ${SECRET_NEXTCLOUD_POSTGRESQL_PW}
-    mariadb:
-      enabled: false
-    redis:
-      enabled: false
-    postgresql:
-      enabled: true
-      image:
-        tag: 16.0.0-debian-11-r13
-      global:
-        postgresql:
-          auth:
-            password: ${SECRET_NEXTCLOUD_POSTGRESQL_PW}
-      primary:
-        persistence:
-          enabled: true
-          storageClass: ceph-ssd
-        resources:
-          requests:
-            cpu: 250m
-            memory: 256Mi
-            hugepages-2Mi: 256Mi
-          limits:
-            cpu: 1000m
-            memory: 1Gi
-            hugepages-2Mi: 256Mi
-    cronjob:
-      enabled: true
+    controllers:
+      main:
+        replicas: 1
+        initContainers:
+          0-init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 15.5
+            envFrom: &envFrom
+              - secretRef:
+                  name: nextcloud-secret
+          1-occ-upgrade:
+            image:
+              repository: nextcloud
+              tag: 28.0.0-apache
+            command: ["/usr/bin/su"]
+            args: ["www-data", "-s", "/bin/bash", "-c", "/var/www/html/occ upgrade"]
+            env:
+              TZ: "${TIMEZONE}"
+              OVERWRITEPROTOCOL: "https"
+              OVERWRITEHOST: "nextcloud.${SECRET_DOMAIN}"
+            envFrom: *envFrom
+          2-occ-app-upgrade:
+            image:
+              repository: nextcloud
+              tag: 28.0.0-apache
+            command: ["/usr/bin/su"]
+            args: ["www-data", "-s", "/bin/bash", "-c", "/var/www/html/occ app:update --all"]
+            env:
+              TZ: "${TIMEZONE}"
+              OVERWRITEPROTOCOL: "https"
+              OVERWRITEHOST: "nextcloud.${SECRET_DOMAIN}"
+            envFrom: *envFrom
+        containers:
+          main:
+            image: &ncimg
+              repository: nextcloud
+              tag: 28.0.0-apache
+            env: &env
+              TZ: ${TIMEZONE}
+              REDIS_HOST: "redis-master"
+              NC_DOMAIN: &host nextcloud.${SECRET_DOMAIN}
+              NEXTCLOUD_DATA_DIR: /data
+              NEXTCLOUD_TRUSTED_DOMAINS: *host
+              TRUSTED_PROXIES: '10.0.0.0/8'
+            envFrom: *envFrom
+            securityContext: &sc
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+            probes:
+              startup:
+                enabled: true
+                type: TCP
+                spec:
+                  initialDelaySeconds: 5
+                  timeoutSeconds: 1
+                  periodSeconds: 1
+                  failureThreshold: 7200 # 2 hours
+            resources:
+              requests:
+                cpu: 500m
+                memory: 512Mi
+                hugepages-2Mi: 250Mi
+              limits:
+                cpu: 4000m
+                memory: 6000Mi
+                hugepages-2Mi: 250Mi
     service:
-      type: ClusterIP
-      port: 8080
-      loadBalancerIP: nil
-
+      main:
+        ports:
+          http:
+            port: 80
+    ingress:
+      main:
+        enabled: true
+        className: "nginx-external"
+        annotations:
+          haproxy.org/backend-config-snippet: |
+            acl url_discovery path /.well-known/caldav /.well-known/carddav
+            http-request redirect location /remote.php/dav/ code 301 if url_discovery
+            option http-keep-alive
+            timeout server 120000ms
+          haproxy.org/response-set-header: |
+            Strict-Transport-Security "max-age=31536000"
+            X-Frame-Options "SAMEORIGIN"
+            X-Content-Type-Options "nosniff"
+            X-Download-Options "NoOpen"
+            Referrer-Policy "no-referrer-when-downgrade"
+        hosts:
+          - host: "nextcloud.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+                  port: http
+        tls:
+          - secretName: "nextcloud-cert"
     persistence:
-      # Nextcloud Data (/var/www/html)
-      enabled: true
-      existingClaim: nextcloud-config
-
+      config:
+        enabled: true
+        existingClaim: nextcloud-config
       nextcloudData:
         enabled: true
         existingClaim: nextcloud-data
-
-    ## Liveness and readiness probe values
-    ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
-    ##
-    livenessProbe:
-      enabled: true
-      initialDelaySeconds: 10
-      periodSeconds: 10
-      timeoutSeconds: 5
-      failureThreshold: 3
-      successThreshold: 1
-    readinessProbe:
-      enabled: true
-      initialDelaySeconds: 10
-      periodSeconds: 10
-      timeoutSeconds: 5
-      failureThreshold: 3
-      successThreshold: 1
-    startupProbe:
-      enabled: true
-      initialDelaySeconds: 30
-      periodSeconds: 10
-      timeoutSeconds: 5
-      failureThreshold: 30
-      successThreshold: 1
-
-    hpa:
-      enabled: false
-      cputhreshold: 60
-      minPods: 1
-      maxPods: 10
-
-    nodeSelector: {}
-
-    tolerations: []
-
-    affinity: {}
