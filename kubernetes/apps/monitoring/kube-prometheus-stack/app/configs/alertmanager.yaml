@@ -31,11 +31,6 @@ inhibit_rules:
       - severity = "warning"
 
 receivers:
-  - name: heartbeat
-    webhook_configs:
-      - send_resolved: true
-        url: "{{ .UPTIMEROBOT_HEARTBEAT_URL }}"
-  - name: "null"
   - name: pushover
     pushover_configs:
       - html: true
