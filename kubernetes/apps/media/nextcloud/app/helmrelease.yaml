@@ -56,7 +56,7 @@ spec:
             env: &env
               TZ: ${TIMEZONE}
               # https://github.com/nextcloud/docker/issues/763
-              #REDIS_HOST: "redis-master"
+              # REDIS_HOST: "redis-master"
               NC_DOMAIN: &host nextcloud.${SECRET_DOMAIN}
               NEXTCLOUD_DATA_DIR: /data
               NEXTCLOUD_TRUSTED_DOMAINS: *host
@@ -120,7 +120,7 @@ spec:
       config:
         enabled: true
         existingClaim: nextcloud-config
-        mountPath: /var/www/html/config
+        mountPath: /var/www/html
       nextcloud-data:
         enabled: true
         existingClaim: nextcloud-data
