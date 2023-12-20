@@ -63,7 +63,7 @@ spec:
               TRUSTED_PROXIES: '10.0.0.0/8'
             envFrom: *envFrom
             securityContext: &sc
-              readOnlyRootFilesystem: true
+              #readOnlyRootFilesystem: true
               allowPrivilegeEscalation: false
               capabilities:
                 drop: ["ALL"]
