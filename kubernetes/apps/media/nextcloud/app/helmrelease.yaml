@@ -113,11 +113,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: nextcloud-config
-        globalMounts:
-          - path: /var/www/html
-      nextcloud-data:
-        enabled: true
         existingClaim: nextcloud-data
         globalMounts:
-          - path: /var/www/html/data
+          - path: /var/www/html

@@ -11,20 +11,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Ti
-  storageClassName: ${CLUSTER_STORAGE_BLOCK_HDD}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nextcloud-config
-  namespace: media
-  labels:
-    app.kubernetes.io/name: nextcloud
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+      storage: 10Ti
   storageClassName: ${CLUSTER_STORAGE_BLOCK_HDD}
