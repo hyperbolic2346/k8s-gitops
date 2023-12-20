@@ -115,8 +115,10 @@ spec:
       config:
         enabled: true
         existingClaim: nextcloud-config
-        mountPath: /var/www/html
+        globalMounts:
+          - path: /var/www/html
       nextcloud-data:
         enabled: true
         existingClaim: nextcloud-data
-        mountPath: /data
+        globalMounts:
+          - path: /data
