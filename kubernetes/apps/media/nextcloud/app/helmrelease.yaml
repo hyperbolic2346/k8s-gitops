@@ -87,7 +87,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: "nginx-external"
+        className: "external"
         annotations:
           haproxy.org/backend-config-snippet: |
             acl url_discovery path /.well-known/caldav /.well-known/carddav
