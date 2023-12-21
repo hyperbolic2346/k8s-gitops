@@ -89,17 +89,7 @@ spec:
         enabled: true
         className: "external"
         annotations:
-          haproxy.org/backend-config-snippet: |
-            acl url_discovery path /.well-known/caldav /.well-known/carddav
-            http-request redirect location /remote.php/dav/ code 301 if url_discovery
-            option http-keep-alive
-            timeout server 120000ms
-          haproxy.org/response-set-header: |
-            Strict-Transport-Security "max-age=31536000"
-            X-Frame-Options "SAMEORIGIN"
-            X-Content-Type-Options "nosniff"
-            X-Download-Options "NoOpen"
-            Referrer-Policy "no-referrer-when-downgrade"
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: "nextcloud.${SECRET_DOMAIN}"
             paths:
