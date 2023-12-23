@@ -1,0 +1,18 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-fileserv
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: "${SECRET_FILESERV_IP}"
+  share: "${SECRET_FILESERV_KUBERNETES_PATH}"
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4.1
+  - nconnect=16
+  - hard
+  - noatime
+  - rsize=131072
+  - wsize=131072
