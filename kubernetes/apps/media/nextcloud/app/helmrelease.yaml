@@ -87,7 +87,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: "external"
+        className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
@@ -101,7 +101,7 @@ spec:
         tls:
           - hosts:
               - *host
-          - secretName: "nextcloud-cert"
+          - secretName: nextcloud-cert
     persistence:
       config:
         enabled: true
