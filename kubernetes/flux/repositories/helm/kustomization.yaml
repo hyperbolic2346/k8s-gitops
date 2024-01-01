@@ -9,6 +9,7 @@ resources:
   - ./botkube-charts.yaml
   - ./cilium-charts.yaml
   - ./cloudnative-pg-charts.yaml
+  - ./csi-driver-nfs.yaml
   - ./external-secrets-charts.yaml
   - ./gate-charts.yaml
   - ./grafana-charts.yaml
