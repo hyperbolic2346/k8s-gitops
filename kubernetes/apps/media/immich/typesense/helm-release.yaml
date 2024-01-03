@@ -33,7 +33,7 @@ spec:
         configmap.reloader.stakater.com/reload: immich-configmap
     image:
       repository: docker.io/typesense/typesense
-      tag: 0.25.1
+      tag: 0.25.2
     envFrom:
       - configMapRef:
           name: immich-configmap
