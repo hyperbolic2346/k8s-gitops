@@ -1,0 +1,73 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: sandstorm
+  namespace: gaming
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.0.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 60m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+      remediateLastFailure: true
+    cleanupOnFail: true
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: knobby/sandstorm
+              tag: v2
+            probes:
+              startup:
+                enabled: false
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+            resources:
+              requests:
+                cpu: 1000m
+                memory: 2Gi
+              limits:
+                cpu: 2000m
+                memory: 4Gi
+            env:
+              TZ: America/New_York
+
+    persistence:
+      game:
+        type: nfs
+        server: ${SECRET_FILESERV_IP}
+        path: ${SECRET_FILESERV_BASE_PATH}/sandstorm
+        globalMounts:
+          - path: /insurgency
+
+    service:
+      main:
+        ports:
+          http:
+            enabled: false
+          insurg-query:
+            enabled: true
+            port: 27131
+            protocol: UDP
+          insurg-main-udp:
+            enabled: true
+            port: 27102
+            protocol: UDP
+        type: LoadBalancer
