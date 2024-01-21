@@ -1,44 +1,26 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: sandstorm
   namespace: gaming
 spec:
-  interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 2.0.3
+      version: 2.4.0
       sourceRef:
+        name: bjw-s
         kind: HelmRepository
-        name: bjw-s-charts
         namespace: flux-system
-      interval: 60m
-  install:
-    createNamespace: true
-    remediation:
-      retries: 5
-  upgrade:
-    remediation:
-      retries: 5
-      remediateLastFailure: true
-    cleanupOnFail: true
   values:
     controllers:
       main:
         containers:
           main:
             image:
-              repository: knobby/sandstorm
-              tag: v2
-            probes:
-              startup:
-                enabled: false
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
+              repository: "docker.io/andrewmhub/insurgency-sandstorm"
+              tag: lite # I wish this wasn't how it's tagged, but alas
             resources:
               requests:
                 cpu: 1000m
@@ -48,26 +30,102 @@ spec:
                 memory: 4Gi
             env:
               TZ: America/New_York
-
-    persistence:
-      game:
-        type: nfs
-        server: ${SECRET_FILESERV_IP}
-        path: ${SECRET_FILESERV_BASE_PATH}/sandstorm
-        globalMounts:
-          - path: /insurgency
-
+              HOSTNAME: "${SECRET_SANDSTORM_NAME}"
+              PORT: &port "27102"
+              QUERYPORT: &query "27131"
+              LAUNCH_SERVER_ENV: "-hostname=\"${SECRET_SANDSTORM_NAME}\" -Log -Port=${SECRET_SANDSTORM_PORT} -QueryPort=${SECRET_SANDSTORM_QUERYPORT} -MapCycle=MapCycle -NoEAC -EnableCheats -Mods -mutators=${SECRET_SANDSTORM_MUTATORS} -ModDownloadTravelTo=${SECRET_SANDSTORM_INIT_MAP}?Scenario=Scenario_${SECERT_SANDSTORM_INIT_MAP}_${SECRET_SANDSTORM_INIT_SCENARIO}"
+            probes:
+              startup:
+                enabled: false
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+            args: ["-hostname=\"${SECRET_SANDSTORM_NAME}\"", "-Log", "-Port=${SECRET_SANDSTORM_PORT}", "-QueryPort=${SECRET_SANDSTORM_QUERYPORT}", "-MapCycle=MapCycle", "-NoEAC", "-EnableCheats", "-Mods", "-CmdModList=\"${SECRET_SANDSTORM_MODS}\"", "-mutators=${SECRET_SANDSTORM_MUTATORS}", "-ModDownloadTravelTo=${SECRET_SANDSTORM_INIT_MAP}?Scenario=Scenario_${SECRET_SANDSTORM_INIT_MAP}_${SECRET_SANDSTORM_INIT_SCENARIO}"]
+            securityContext:
+              runAsUser: &uid 1000
+              runAsGroup: *uid
+              fsGroup: *uid
+              fsGroupChangePolicy: "Always"
     service:
       main:
+        enabled: true
+        type: LoadBalancer
+        externalTrafficPolicy: Cluster
         ports:
           http:
             enabled: false
-          insurg-query:
+            primary: false
+          gameudp:
             enabled: true
-            port: 27131
+            port: *port
             protocol: UDP
-          insurg-main-udp:
+          queryudp:
             enabled: true
-            port: 27102
+            port: *query
             protocol: UDP
-        type: LoadBalancer
+    persistence:
+      game:
+        enabled: true
+        type: pvc
+        mountPath: /home/steam/steamcmd/sandstorm
+        accessMode: ReadWriteOnce
+        storageClass: nfs-fileserv
+        size: 100Gi
+        retain: true
+        readOnly: false
+      gameini:
+        enabled: true
+        type: configMap
+        name: insurgency-sandstorm-gameini
+        subPath: Game.ini
+        mountPath: /home/steam/steamcmd/sandstorm/Insurgency/Saved/Config/LinuxServer/Game.ini
+        defaultMode: 0777
+        readOnly: true
+      engineini:
+        enabled: true
+        type: configMap
+        name: insurgency-sandstorm-engineini
+        subPath: Engine.ini
+        mountPath: /home/steam/steamcmd/sandstorm/Insurgency/Saved/Config/LinuxServer/Engine.ini
+        defaultMode: 0777
+        readOnly: true
+      gameusersettingsini:
+        enabled: true
+        type: secret
+        name: insurgency-sandstorm-gameusersettingsini
+        subPath: GameUserSettings.ini
+        mountPath: /home/steam/steamcmd/sandstorm/Insurgency/Saved/Config/LinuxServer/GameUserSettings.ini
+        defaultMode: 0777
+        readOnly: true
+      adminstxt:
+        enabled: true
+        type: secret
+        name: insurgency-sandstorm-adminstxt
+        subPath: Admins.txt
+        mountPath: /home/steam/steamcmd/sandstorm/Insurgency/Config/Server/Admins.txt
+        defaultMode: 0777
+        readOnly: true
+      mapcycletxt:
+        enabled: true
+        type: configMap
+        name: insurgency-sandstorm-mapcycletxt
+        subPath: MapCycle.txt
+        mountPath: /home/steam/steamcmd/sandstorm/Insurgency/Config/Server/MapCycle.txt
+        defaultMode: 0777
+        readOnly: true
+      modstxt:
+        enabled: true
+        type: configMap
+        name: insurgency-sandstorm-modstxt
+        subPath: Mods.txt
+        mountPath: /home/steam/steamcmd/sandstorm/Insurgency/Config/Server/Mods.txt
+        defaultMode: 0777
+        readOnly: true
+    resources:
+      requests:
+        cpu: "1000m"
+        memory: "2048Mi"
+      limits:
+        cpu: "3000m" # 3 cores
+        memory: "6000Mi"
