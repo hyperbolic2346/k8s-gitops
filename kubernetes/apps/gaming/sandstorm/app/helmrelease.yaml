@@ -17,6 +17,12 @@ spec:
   values:
     controllers:
       main:
+        pod:
+          securityContext:
+            runAsUser: &uid 1000
+            runAsGroup: *uid
+            fsGroup: *uid
+            fsGroupChangePolicy: "Always"
         containers:
           main:
             image:
@@ -27,8 +33,8 @@ spec:
                 cpu: 1000m
                 memory: 2Gi
               limits:
-                cpu: 2000m
-                memory: 4Gi
+                cpu: 3000m
+                memory: 6Gi
             env:
               TZ: ${TIMEZONE}
               HOSTNAME: "${SECRET_SANDSTORM_NAME}"
@@ -43,11 +49,6 @@ spec:
               readiness:
                 enabled: false
             args: ["-hostname=\"${SECRET_SANDSTORM_NAME}\"", "-Log", "-Port=${SECRET_SANDSTORM_PORT}", "-QueryPort=${SECRET_SANDSTORM_QUERYPORT}", "-MapCycle=MapCycle", "-NoEAC", "-EnableCheats", "-Mods", "-CmdModList=\"${SECRET_SANDSTORM_MODS}\"", "-mutators=${SECRET_SANDSTORM_MUTATORS}", "-ModDownloadTravelTo=${SECRET_SANDSTORM_INIT_MAP}?Scenario=Scenario_${SECRET_SANDSTORM_INIT_MAP}_${SECRET_SANDSTORM_INIT_SCENARIO}"]
-            securityContext:
-              runAsUser: &uid 1000
-              runAsGroup: *uid
-              fsGroup: *uid
-              fsGroupChangePolicy: "Always"
     service:
       main:
         enabled: true
@@ -143,10 +144,3 @@ spec:
                 path: /home/steam/steamcmd/sandstorm/Insurgency/Config/Server/Mods.txt
         defaultMode: 0777
         readOnly: true
-    resources:
-      requests:
-        cpu: "1000m"
-        memory: "2048Mi"
-      limits:
-        cpu: "3000m" # 3 cores
-        memory: "6000Mi"
