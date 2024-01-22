@@ -34,7 +34,7 @@ spec:
               HOSTNAME: "${SECRET_SANDSTORM_NAME}"
               PORT: &port "27102"
               QUERYPORT: &query "27131"
-              LAUNCH_SERVER_ENV: "-hostname=\"${SECRET_SANDSTORM_NAME}\" -Log -Port=${SECRET_SANDSTORM_PORT} -QueryPort=${SECRET_SANDSTORM_QUERYPORT} -MapCycle=MapCycle -NoEAC -EnableCheats -Mods -mutators=${SECRET_SANDSTORM_MUTATORS} -ModDownloadTravelTo=${SECRET_SANDSTORM_INIT_MAP}?Scenario=Scenario_${SECERT_SANDSTORM_INIT_MAP}_${SECRET_SANDSTORM_INIT_SCENARIO}"
+              LAUNCH_SERVER_ENV: "-hostname=\"${SECRET_SANDSTORM_NAME}\" -Log -Port=${SECRET_SANDSTORM_PORT} -QueryPort=${SECRET_SANDSTORM_QUERYPORT} -MapCycle=MapCycle -NoEAC -EnableCheats -Mods -mutators=${SECRET_SANDSTORM_MUTATORS} -ModDownloadTravelTo=${SECRET_SANDSTORM_INIT_MAP}?Scenario=Scenario_${SECRET_SANDSTORM_INIT_MAP}_${SECRET_SANDSTORM_INIT_SCENARIO}"
             probes:
               startup:
                 enabled: false
