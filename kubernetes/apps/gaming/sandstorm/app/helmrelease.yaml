@@ -68,7 +68,6 @@ spec:
     persistence:
       game:
         enabled: true
-        type: pvc
         mountPath: /home/steam/steamcmd/sandstorm
         accessMode: ReadWriteOnce
         storageClass: nfs-fileserv
