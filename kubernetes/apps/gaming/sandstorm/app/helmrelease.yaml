@@ -40,7 +40,7 @@ spec:
               HOSTNAME: "${SECRET_SANDSTORM_NAME}"
               PORT: &port "27102"
               QUERYPORT: &query "27131"
-              LAUNCH_SERVER_ENV: "-hostname=\"${SECRET_SANDSTORM_NAME}\" -Log -Port=${SECRET_SANDSTORM_PORT} -QueryPort=${SECRET_SANDSTORM_QUERYPORT} -MapCycle=MapCycle -NoEAC -EnableCheats -GameStatsToken=${SECRET_SANDSTORM_STATSTOKEN} -Mods -mutators=${SECRET_SANDSTORM_MUTATORS} -ModDownloadTravelTo=${SECRET_SANDSTORM_INIT_MAP}?Scenario=Scenario_${SECRET_SANDSTORM_INIT_MAP}_${SECRET_SANDSTORM_INIT_SCENARIO}?mutators=${SECRET_SANDSTORM_MUTATORS}"
+              LAUNCH_SERVER_ENV: "-hostname=\"${SECRET_SANDSTORM_NAME}\" -Log -Port=${SECRET_SANDSTORM_PORT} -QueryPort=${SECRET_SANDSTORM_QUERYPORT} -MapCycle=MapCycle -NoEAC -EnableCheats -GameStatsToken=${SECRET_SANDSTORM_STATSTOKEN} -Mods -ModList=Mods -mutators=${SECRET_SANDSTORM_MUTATORS} -ModDownloadTravelTo=${SECRET_SANDSTORM_INIT_MAP}?Scenario=Scenario_${SECRET_SANDSTORM_INIT_MAP}_${SECRET_SANDSTORM_INIT_SCENARIO}?mutators=${SECRET_SANDSTORM_MUTATORS}"
             probes:
               startup:
                 enabled: false
@@ -48,7 +48,7 @@ spec:
                 enabled: false
               readiness:
                 enabled: false
-            args: ["-hostname=\"${SECRET_SANDSTORM_NAME}\"", "-Log", "-Port=${SECRET_SANDSTORM_PORT}", "-QueryPort=${SECRET_SANDSTORM_QUERYPORT}", "-MapCycle=MapCycle", "-NoEAC", "-EnableCheats", "-GameStatsToken=${SECRET_SANDSTORM_STATSTOKEN}", "-Mods", "-CmdModList=\"${SECRET_SANDSTORM_MODS}\"", "-mutators=${SECRET_SANDSTORM_MUTATORS}", "-ModDownloadTravelTo=${SECRET_SANDSTORM_INIT_MAP}?Scenario=Scenario_${SECRET_SANDSTORM_INIT_MAP}_${SECRET_SANDSTORM_INIT_SCENARIO}?mutators=${SECRET_SANDSTORM_MUTATORS}"]
+            args: ["-hostname=\"${SECRET_SANDSTORM_NAME}\"", "-Log", "-Port=${SECRET_SANDSTORM_PORT}", "-QueryPort=${SECRET_SANDSTORM_QUERYPORT}", "-MapCycle=MapCycle", "-NoEAC", "-EnableCheats", "-GameStatsToken=${SECRET_SANDSTORM_STATSTOKEN}", "-Mods", "-ModList=Mods", "-CmdModList=\"${SECRET_SANDSTORM_MODS}\"", "-mutators=${SECRET_SANDSTORM_MUTATORS}", "-ModDownloadTravelTo=${SECRET_SANDSTORM_INIT_MAP}?Scenario=Scenario_${SECRET_SANDSTORM_INIT_MAP}_${SECRET_SANDSTORM_INIT_SCENARIO}?mutators=${SECRET_SANDSTORM_MUTATORS}"]
     service:
       main:
         enabled: true
