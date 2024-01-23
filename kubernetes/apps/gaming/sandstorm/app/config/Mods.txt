@@ -1,6 +1,5 @@
 93636; improved ai
 98145; No Restricted Area
-760053; GreenZone
 101966; Join Leave Message
 98373; More Ammo Mutator
 98685; Jump Shoot
