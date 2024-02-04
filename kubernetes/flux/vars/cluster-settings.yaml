@@ -26,6 +26,7 @@ data:
   CLUSTER_STORAGE_FILESYSTEM_HDD: cephfs-hdd
   CLUSTER_SNAPSHOT_FILESYSTEM_HDD: cephfs-hdd-snapshot
   CLUSTER_STORAGE_BUCKET: ceph-bucket
+  CLUSTER_STORAGE_NFS: nfs-fileserv
 
   # Cilium
   CILIUM_LB_CIDR: 192.168.14.0/24
