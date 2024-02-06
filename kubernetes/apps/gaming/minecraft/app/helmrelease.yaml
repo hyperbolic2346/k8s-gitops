@@ -33,10 +33,6 @@ spec:
         memory: 16Gi
         cpu: 5000m
 
-    securityContext:
-      runAsUser: 1000
-      fsGroup: 2000
-
     livenessProbe:
       initialDelaySeconds: 30
       periodSeconds: 5
@@ -60,7 +56,7 @@ spec:
       # One of: LATEST, SNAPSHOT, or a specific version (ie: "1.7.9").
       version: LATEST
       # This can be one of "VANILLA", "FORGE", "SPIGOT", "BUKKIT", "PAPER", "FTBA", "SPONGEVANILLA"
-      type: PAPER
+      type: SPIGOT
       # If type is set to FORGE, this sets the version; this is ignored if forgeInstallerUrl is set
       forgeVersion:
       # If type is set to SPONGEVANILLA, this sets the version
@@ -118,7 +114,7 @@ spec:
       # One of: creative, survival, adventure, spectator
       gameMode: survival
       # Message of the Day
-      motd: Welcome to Oliver's 2023 Paper server!
+      motd: Welcome to Oliver's 2023 Server!
       # If true, enable player-vs-player damage.
       pvp: false
       # One of: DEFAULT, FLAT, LARGEBIOMES, AMPLIFIED, CUSTOMIZED
@@ -154,6 +150,8 @@ spec:
       externalTrafficPolicy: Local
       externalIPs:
 
+      modUrls:
+       - https://dynmap.us/builds/dynmap/Dynmap-3.7-beta-4-spigot.jar
 
       rcon:
         # If you enable this, make SURE to change your password below.
