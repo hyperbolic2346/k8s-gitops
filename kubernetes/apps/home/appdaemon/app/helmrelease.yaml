@@ -47,7 +47,7 @@ spec:
         enabled: true
         image:
           repository: codercom/code-server
-          tag: 4.21.0
+          tag: 4.21.1
         workingDir: /conf
         args:
           - --auth
