@@ -90,6 +90,7 @@ spec:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          nginx.ingress.kubernetes.io/proxy-body-size: 4G
         hosts:
           - host: &host nextcloud.${SECRET_DOMAIN}
             paths:
