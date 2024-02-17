@@ -100,9 +100,25 @@ spec:
         enabled: true
         existingClaim: sabnzbd-config
       movies:
-        existingClaim: movies
-      music:
-        existingClaim: music
+        existingClaim: videos
+        path: Movies
+        globalMounts:
+          - path: /movies
+      tv:
+        existingClaim: videos
+        path: TV
+        globalMounts:
+          - path: /tv
+      incoming_movies:
+        existingClaim: videos
+        path: incoming_movies
+        globalMounts:
+          - path: /incoming_movies
+      incoming_tv:
+        existingClaim: videos
+        path: incoming
+        globalMounts:
+          - path: /incoming_tv
     service:
       main:
         ports:

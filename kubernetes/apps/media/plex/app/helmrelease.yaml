@@ -82,9 +82,15 @@ spec:
       transcode:
         type: emptyDir
       movies:
-        existingClaim: movies
+        existingClaim: videos
+        path: Movies
+        globalMounts:
+          - path: /movies
       tv:
-        existingClaim: tv
+        existingClaim: videos
+        path: TV
+        globalMounts:
+          - path: /tv
     service:
       main:
         type: LoadBalancer

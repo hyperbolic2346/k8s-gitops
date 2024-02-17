@@ -102,12 +102,16 @@ spec:
       config:
         enabled: true
         existingClaim: sonarr-config
-      media:
-        existingClaim: tv
-        mountPath: /media
-      incoming:
-        existingClaim: incoming-sabnzbd
-        mountPath: /incoming
+      tv:
+        existingClaim: videos
+        path: TV
+        globalMounts:
+          - path: /tv
+      incoming_tv:
+        existingClaim: videos
+        path: incoming
+        globalMounts:
+          - path: /incoming_tv
     service:
       main:
         ports:

@@ -102,12 +102,16 @@ spec:
       config:
         enabled: true
         existingClaim: radarr-config
-      media:
-        existingClaim: movies
-        mountPath: /media
-      downloads:
-        existingClaim: incoming-movies-sabnzbd
-        mountPath: /incoming
+      movies:
+        existingClaim: videos
+        path: Movies
+        globalMounts:
+          - path: /movies
+      incoming_movies:
+        existingClaim: videos
+        path: incoming_movies
+        globalMounts:
+          - path: /incoming_movies
     service:
       main:
         ports:
