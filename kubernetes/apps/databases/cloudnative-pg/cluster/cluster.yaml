@@ -13,8 +13,8 @@ spec:
   - name: TZ
     value: ${TIMEZONE}
   storage:
-    size: 25Gi
-    storageClass: ${CLUSTER_STORAGE_BLOCK_SSD}
+    size: 50Gi
+    storageClass: ${CLUSTER_STORAGE_NFS}
   superuserSecret:
     name: cloudnative-pg-secret
   postgresql:
