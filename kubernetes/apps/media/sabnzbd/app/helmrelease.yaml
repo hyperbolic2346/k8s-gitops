@@ -99,15 +99,10 @@ spec:
       config:
         enabled: true
         existingClaim: sabnzbd-config
-      media:
-        existingClaim: incoming-movies-sabnzbd
-        mountPath: /incoming_movies
-      downloads:
-        existingClaim: incoming-sabnzbd
-        mountPath: /downloads
+      movies:
+        existingClaim: movies
       music:
-        existingClaim: incoming-mp3-sabnzbd
-        mountPath: /incoming_music
+        existingClaim: music
     service:
       main:
         ports:
