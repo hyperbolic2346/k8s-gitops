@@ -12,7 +12,7 @@ spec:
   resources:
     requests:
       storage: 2Ti
-  storageClassName: ${CLUSTER_STORAGE_BLOCK_SSD}
+  storageClassName: ${CLUSTER_STORAGE_NFS}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,4 +27,4 @@ spec:
   resources:
     requests:
       storage: 20Ti
-  storageClassName: ${CLUSTER_STORAGE_BLOCK_SSD}
+  storageClassName: ${CLUSTER_STORAGE_NFS}
