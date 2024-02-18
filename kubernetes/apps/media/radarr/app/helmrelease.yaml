@@ -107,11 +107,11 @@ spec:
         path: Movies
         globalMounts:
           - path: /movies
-      incoming_movies:
+      incomingmovies:
         existingClaim: videos
-        path: incoming_movies
+        path: incomingmovies
         globalMounts:
-          - path: /incoming_movies
+          - path: /incomingmovies
     service:
       main:
         ports:

@@ -107,11 +107,11 @@ spec:
         path: TV
         globalMounts:
           - path: /tv
-      incoming_tv:
+      incomingtv:
         existingClaim: videos
         path: incoming
         globalMounts:
-          - path: /incoming_tv
+          - path: /incomingtv
     service:
       main:
         ports:
