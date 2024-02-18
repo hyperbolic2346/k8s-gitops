@@ -101,22 +101,22 @@ spec:
         existingClaim: sabnzbd-config
       movies:
         existingClaim: videos
-        path: Movies
+        path: /Movies
         globalMounts:
           - path: /movies
       tv:
         existingClaim: videos
-        path: TV
+        path: /TV
         globalMounts:
           - path: /tv
       incomingmovies:
         existingClaim: videos
-        path: incomingmovies
+        path: /incoming_movies
         globalMounts:
           - path: /incomingmovies
       incomingtv:
         existingClaim: videos
-        path: incoming
+        path: /incoming
         globalMounts:
           - path: /incomingtv
     service:
