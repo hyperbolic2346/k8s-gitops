@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.0.3
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -102,16 +102,10 @@ spec:
       config:
         enabled: true
         existingClaim: sonarr-config
-      tv:
+      media:
         existingClaim: videos
-        path: TV
         globalMounts:
-          - path: /tv
-      incomingtv:
-        existingClaim: videos
-        path: incoming
-        globalMounts:
-          - path: /incomingtv
+          - path: /media
     service:
       main:
         ports:
