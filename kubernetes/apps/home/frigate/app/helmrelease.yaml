@@ -31,7 +31,7 @@ spec:
             strategy: Recreate
             image:
               repository: ghcr.io/blakeblackshear/frigate
-              tag: 0.13.1
+              tag: 0.13.2
             env:
               TZ: ${TIMEZONE}
               FRIGATE_MQTT_HOST: ${SECRET_MQTT_HOST}
