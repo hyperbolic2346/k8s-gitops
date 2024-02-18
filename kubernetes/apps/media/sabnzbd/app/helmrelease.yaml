@@ -103,22 +103,22 @@ spec:
         existingClaim: videos
         globalMounts:
           - path: /movies
-            subPath: /Movies
+            subPath: Movies
       tv:
         existingClaim: videos
         globalMounts:
           - path: /tv
-            subPath: /TV
+            subPath: TV
       incomingmovies:
         existingClaim: videos
         globalMounts:
           - path: /incomingmovies
-            subPath: /incoming_movies
+            subPath: incoming_movies
       incomingtv:
         existingClaim: videos
         globalMounts:
           - path: /incomingtv
-            subPath: /incoming
+            subPath: incoming
     service:
       main:
         ports:
