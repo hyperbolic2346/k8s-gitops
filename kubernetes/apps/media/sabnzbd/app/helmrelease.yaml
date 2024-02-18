@@ -109,16 +109,16 @@ spec:
         path: TV
         globalMounts:
           - path: /tv
-      incoming_movies:
+      incomingmovies:
         existingClaim: videos
-        path: incoming_movies
+        path: incomingmovies
         globalMounts:
-          - path: /incoming_movies
-      incoming_tv:
+          - path: /incomingmovies
+      incomingtv:
         existingClaim: videos
         path: incoming
         globalMounts:
-          - path: /incoming_tv
+          - path: /incomingtv
     service:
       main:
         ports:
