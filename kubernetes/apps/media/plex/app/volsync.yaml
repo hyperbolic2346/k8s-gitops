@@ -21,28 +21,28 @@ spec:
   dataFrom:
     - extract:
         key: volsync-restic-template
----
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationSource
-metadata:
-  name: plex
-  namespace: media
-spec:
-  sourcePVC: plex-config
-  trigger:
-    schedule: "0 8 * * *"
-  restic:
-    copyMethod: Snapshot
-    pruneIntervalDays: 10
-    repository: plex-restic-secret
-    cacheCapacity: 20Gi
-    volumeSnapshotClassName: ${CLUSTER_SNAPSHOT_BLOCK_SSD}
-    storageClassName: ${CLUSTER_STORAGE_BLOCK_SSD}
-    cacheStorageClassName: ${CLUSTER_STORAGE_BLOCK_SSD}
-    moverSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-    retain:
-      daily: 10
-      within: 3d
+#---
+#apiVersion: volsync.backube/v1alpha1
+#kind: ReplicationSource
+#metadata:
+#  name: plex
+#  namespace: media
+#spec:
+#  sourcePVC: plex-config
+#  trigger:
+#    schedule: "0 8 * * *"
+#  restic:
+#    copyMethod: Snapshot
+#    pruneIntervalDays: 10
+#    repository: plex-restic-secret
+#    cacheCapacity: 20Gi
+#    volumeSnapshotClassName: ${CLUSTER_SNAPSHOT_BLOCK_SSD}
+#    storageClassName: ${CLUSTER_STORAGE_BLOCK_SSD}
+#    cacheStorageClassName: ${CLUSTER_STORAGE_BLOCK_SSD}
+#    moverSecurityContext:
+#      runAsUser: 568
+#      runAsGroup: 568
+#      fsGroup: 568
+#    retain:
+#      daily: 10
+#      within: 3d
