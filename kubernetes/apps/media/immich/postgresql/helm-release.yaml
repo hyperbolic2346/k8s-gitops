@@ -31,7 +31,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/postgresql
-      tag: 16.1.0-debian-11-r17
+      tag: 16.2.0-debian-11-r17
       debug: true
     global:
       postgresql:
