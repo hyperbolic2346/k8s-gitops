@@ -13,12 +13,9 @@ data:
   REDIS_HOSTNAME: immich-redis.media.svc.cluster.local
   REDIS_PORT: '6379'
 
-  DB_PORT: '5432'
   LOG_LEVEL: verbose
-  TYPESENSE_API_KEY: xyz
-  TYPESENSE_DATA_DIR: /config
+
+  TYPESENSE_ENABLED: "true"
   TYPESENSE_HOST: immich-typesense.media.svc.cluster.local
-  DB_DATABASE_NAME: immich
-  DB_HOSTNAME: immich-postgresql.media.svc.cluster.local
-  DB_PASSWORD: ${SECRET_IMMICH_REDIS_PW}
-  DB_USERNAME: ${SECRET_IMMICH_REDIS_USER}
+  TYPESENSE_PORT: 8108
+  TYPESENSE_PROTOCOL: http
