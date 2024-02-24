@@ -7,7 +7,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-home-assistant
-    - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/home/appdaemon/app
   prune: true

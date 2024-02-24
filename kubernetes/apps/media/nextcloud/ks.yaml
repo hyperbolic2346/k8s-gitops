@@ -8,7 +8,6 @@ spec:
   dependsOn:
     - name: cluster-apps-volsync
     - name: cluster-apps-pvc-media
-    - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/media/nextcloud/app
   prune: true
