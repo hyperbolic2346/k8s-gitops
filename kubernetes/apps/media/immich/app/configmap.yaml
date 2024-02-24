@@ -5,13 +5,16 @@ metadata:
   name: immich-configmap
   namespace: media
 data:
-  DB_PORT: '5432'
-  IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003
-  IMMICH_SERVER_URL: http://immich-server.media.svc.cluster.local:3001
+  # URLS
   IMMICH_WEB_URL: http://immich-web.media.svc.cluster.local:3000
-  LOG_LEVEL: verbose
+  IMMICH_SERVER_URL: http://immich-server.media.svc.cluster.local:3001
+
+  # REDIS
   REDIS_HOSTNAME: immich-redis.media.svc.cluster.local
   REDIS_PORT: '6379'
+
+  DB_PORT: '5432'
+  LOG_LEVEL: verbose
   TYPESENSE_API_KEY: xyz
   TYPESENSE_DATA_DIR: /config
   TYPESENSE_HOST: immich-typesense.media.svc.cluster.local
