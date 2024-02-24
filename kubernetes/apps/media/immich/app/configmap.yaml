@@ -17,5 +17,5 @@ data:
 
   TYPESENSE_ENABLED: "true"
   TYPESENSE_HOST: immich-typesense.media.svc.cluster.local
-  TYPESENSE_PORT: 8108
+  TYPESENSE_PORT: '8108'
   TYPESENSE_PROTOCOL: http
