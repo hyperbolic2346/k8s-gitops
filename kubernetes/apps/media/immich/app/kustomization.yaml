@@ -5,7 +5,6 @@ resources:
   - configmap.yaml
   - machine-learning
   - microservices
-  - proxy
   - server
   - typesense
   - web
