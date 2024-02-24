@@ -49,6 +49,16 @@ spec:
                 matchLabels:
                   app.kubernetes.io/name: *app
 
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: immich-secret
+              - configMapRef:
+                  name: immich-configmap
         containers:
           main:
             image:
@@ -56,9 +66,7 @@ spec:
               tag: v1.95.1
             args:
               - ./start-server.sh
-            envFrom:
-              - configMapRef:
-                  name: immich-configmap
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 250m
