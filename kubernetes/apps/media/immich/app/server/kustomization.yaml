@@ -6,6 +6,7 @@ resources:
   - ./helm-release.yaml
 configMapGenerator:
   - name: immich-config-tpl
+    namespace: media
     files:
       - ./config/immich.config.json
 generatorOptions:
