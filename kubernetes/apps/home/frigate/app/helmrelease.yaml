@@ -9,35 +9,27 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.0.3
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-      interval: 60m
+      interval: 30m
   values:
-    service:
-      main:
-        ports:
-          http:
-            port: &port 5000
-          rtsp:
-            enabled: true
-            port: 8554
     controllers:
       main:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           main:
-            strategy: Recreate
             image:
               repository: ghcr.io/blakeblackshear/frigate
-              tag: 0.13.2
+              tag: 0.13.2@sha256:2906991ccad85035b176941f9dedfd35088ff710c39d45ef1baa9a49f2b16734
             env:
               TZ: ${TIMEZONE}
-              FRIGATE_MQTT_HOST: ${SECRET_MQTT_HOST}
-              FRIGATE_MQTT_USER: ${SECRET_MQTT_USERNAME}
-              FRIGATE_MQTT_PASSWORD: ${SECRET_MQTT_PASSWORD}
-              PLUS_API_KEY: ${SECRET_FRIGATE_PLUS_API_KEY}
+            envFrom:
+              - secretRef:
+                  name: frigate-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -45,7 +37,7 @@ spec:
                 spec:
                   httpGet:
                     path: /api/version
-                    port: *port
+                    port: &port 5000
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -84,13 +76,22 @@ spec:
           - hosts:
               - frigate.${SECRET_DOMAIN}
             secretName: frigate.cert
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+          rtsp:
+            enabled: true
+            port: 8554
     persistence:
       config-file:
         enabled: true
         type: configMap
         name: frigate-configmap
         globalMounts:
-          - path: /config
+          - path: /config/config.yml
+            subPath: config.yml
             readOnly: true
       data:
         enabled: true
