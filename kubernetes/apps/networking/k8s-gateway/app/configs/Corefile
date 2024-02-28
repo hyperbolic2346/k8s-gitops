@@ -22,8 +22,7 @@
         resources Ingress Service
         fallthrough ${SECRET_DOMAIN}
     }
-    forward ${SECRET_DOMAIN} tls://8.8.8.8 tls://8.8.4.4 {
-        tls_servername dns.google.com
+    forward ${SECRET_DOMAIN} tls://16c562.dns.nextdns.io
         health_check 5s
     }
     cache 30

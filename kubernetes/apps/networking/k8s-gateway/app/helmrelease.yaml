@@ -93,8 +93,12 @@ spec:
             port: 9153
       dns:
         controller: main
-        type: ClusterIP
-        clusterIP: ${K8S_GATEWAY_IP}
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${K8S_GATEWAY_LB_IP}
+          external-dns.alpha.kubernetes.io/hostname: dns.${SECRET_DOMAIN}
+        labels:
+          io.cilium/lb-ipam-layer2: "true"
         ports:
           dns-tcp:
             enabled: true
