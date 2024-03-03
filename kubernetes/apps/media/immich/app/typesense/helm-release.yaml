@@ -36,7 +36,7 @@ spec:
         statefulset:
           volumeClaimTemplates:
             - name: config
-              accessModes: ReadWriteOnce
+              accessMode: ReadWriteOnce
               size: 10Gi
               storageClass: ${CLUSTER_STORAGE_NFS}
               globalMounts:
