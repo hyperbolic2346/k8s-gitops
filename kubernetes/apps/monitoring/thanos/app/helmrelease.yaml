@@ -68,14 +68,14 @@ spec:
       retentionResolution1h: 90d
       persistence:
         enabled: true
-        storageClass: ${CLUSTER_STORAGE_BLOCK_SSD}
+        storageClass: ${CLUSTER_STORAGE_NFS}
         size: 15Gi
     storegateway:
       enabled: true
       replicaCount: 3
       persistence:
         enabled: true
-        storageClass: ${CLUSTER_STORAGE_BLOCK_SSD}
+        storageClass: ${CLUSTER_STORAGE_NFS}
         size: 15Gi
       podAnnotations:
         kyverno.io/exclude: "true"
@@ -102,7 +102,7 @@ spec:
         enabled: true
       persistence:
         enabled: true
-        storageClass: ${CLUSTER_STORAGE_BLOCK_SSD}
+        storageClass: ${CLUSTER_STORAGE_NFS}
         size: 15Gi
     metrics:
       enabled: true
