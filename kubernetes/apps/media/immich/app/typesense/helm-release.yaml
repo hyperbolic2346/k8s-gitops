@@ -50,6 +50,8 @@ spec:
               repository: docker.io/typesense/typesense
               tag: 0.25.2
             envFrom:
+              - secretRef:
+                  name: immich-secret
               - configMapRef:
                   name: immich-configmap
             probes:
