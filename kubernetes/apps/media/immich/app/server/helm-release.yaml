@@ -87,7 +87,6 @@ spec:
           - path: /config
       library:
         enabled: true
-        type: PersistentVolumeClaim
         existingClaim: immich-nfs
         globalMounts:
           - path: /usr/src/app/upload
