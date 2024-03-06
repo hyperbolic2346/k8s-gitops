@@ -6,7 +6,7 @@ metadata:
   namespace: databases
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.0-10
+  imageName: ghcr.io/bo0tzz/cnpgvecto.rs:16.1-v0.1.11
   enableSuperuserAccess: true
   primaryUpdateStrategy: unsupervised
   env:
@@ -29,5 +29,5 @@ spec:
       memory: 1Gi
       hugepages-2Mi: 500Mi
     limits:
-      memory: 2Gi
+      memory: 4Gi
       hugepages-2Mi: 500Mi
