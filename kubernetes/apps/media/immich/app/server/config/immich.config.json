@@ -51,7 +51,7 @@
         "modelName": "microsoft/resnet-50"
       },
       "enabled": true,
-      "url": "http://immich-machine-learning.selfhosted.svc.cluster.local:3003",
+      "url": "http://immich-machine-learning.media.svc.cluster.local:3003",
       "clip": {
         "enabled": true,
         "modelName": "ViT-B-32::openai"
