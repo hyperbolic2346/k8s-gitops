@@ -33,7 +33,7 @@ spec:
           main:
             image:
               repository: zwavejs/zwave-js-ui
-              tag: 9.9.0
+              tag: 9.9.1
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
