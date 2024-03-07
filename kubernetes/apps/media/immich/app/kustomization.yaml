@@ -7,5 +7,3 @@ resources:
   - ./machine-learning
   - ./microservices
   - ./server
-  - ./typesense
-  - ./web
