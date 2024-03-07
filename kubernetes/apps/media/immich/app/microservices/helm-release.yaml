@@ -55,8 +55,10 @@ spec:
               tag: v1.97.0
             args: [start-microservices.sh]
             envFrom:
+              - secretRef:
+                  name: immich-secret
               - configMapRef:
-                  name: *configMap
+                  name: immich-configmap
             resources:
               requests:
                 cpu: 100m
