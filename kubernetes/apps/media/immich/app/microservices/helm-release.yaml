@@ -69,7 +69,6 @@ spec:
         enabled: false
     persistence:
       library:
-        type: PersistentVolumeClaim
         enabled: true
         existingClaim: immich-nfs
         globalMounts:
