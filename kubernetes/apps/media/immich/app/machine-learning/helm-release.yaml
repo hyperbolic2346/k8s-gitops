@@ -54,6 +54,8 @@ spec:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.97.0
             envFrom:
+              - secretRef:
+                  name: immich-secret
               - configMapRef:
                   name: immich-configmap
     service:
