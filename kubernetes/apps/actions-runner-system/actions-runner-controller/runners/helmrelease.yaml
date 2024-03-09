@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     runnerScaleSetName: arc-runner-set-k8s-gitops
-    githubConfigUrl: https://github.com/siderolabs/k8s-gitops
+    githubConfigUrl: https://github.com/hyperbolic2346/k8s-gitops
     minRunners: 1
     maxRunners: 3
     containerMode:
