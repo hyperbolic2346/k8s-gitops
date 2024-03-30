@@ -41,7 +41,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/sonarr-develop
-              tag: 4.0.1.1131@sha256:dab8a943fb50f161a09a8c2e2e7c17a2e230545c5797fc6893f9363b590028af
+              tag: 4.0.2.1408@sha256:f61a58b6075c16ad829eee55b94b99791e2b39c594080ecd21d2c6e0987ade53
             env:
               TZ: ${TIMEZONE}
               SONARR__AUTHENTICATION_METHOD: External
@@ -68,10 +68,10 @@ spec:
                 enabled: false
             resources:
               requests:
-                cpu: 10m
-                memory: 256M
+                cpu: 500m
+                memory: 512M
               limits:
-                memory: 1024M
+                memory: 2048M
         pod:
           securityContext:
             runAsUser: 568

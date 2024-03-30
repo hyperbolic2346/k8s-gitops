@@ -6,7 +6,7 @@ metadata:
   namespace: databases
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.0-10
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16-v0.2.0
   enableSuperuserAccess: true
   primaryUpdateStrategy: unsupervised
   env:
@@ -18,6 +18,7 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   postgresql:
+    shared_preload_libraries: ["vectors.so"]
     parameters:
       max_connections: "600"
       shared_buffers: 512MB
@@ -29,5 +30,5 @@ spec:
       memory: 1Gi
       hugepages-2Mi: 500Mi
     limits:
-      memory: 2Gi
+      memory: 4Gi
       hugepages-2Mi: 500Mi

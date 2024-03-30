@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: gha-runner-scale-set
-      version: 0.8.2
+      version: 0.9.0
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller-charts
@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     runnerScaleSetName: arc-runner-set-k8s-gitops
-    githubConfigUrl: https://github.com/siderolabs/k8s-gitops
+    githubConfigUrl: https://github.com/hyperbolic2346/k8s-gitops
     minRunners: 1
     maxRunners: 3
     containerMode:

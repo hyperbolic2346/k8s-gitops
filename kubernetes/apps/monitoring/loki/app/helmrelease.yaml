@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 5.43.1
+      version: 5.47.2
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
@@ -131,7 +131,7 @@ spec:
           emptyDir: {}
       persistence:
         size: 20Gi
-        storageClass: ${CLUSTER_STORAGE_BLOCK_HDD}
+        storageClass: ${CLUSTER_STORAGE_NFS}
     write:
       replicas: 3
       affinity: |
@@ -145,7 +145,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
       persistence:
         size: 20Gi
-        storageClass: ${CLUSTER_STORAGE_BLOCK_HDD}
+        storageClass: ${CLUSTER_STORAGE_NFS}
       podAnnotations:
         kyverno.io/exclude: "true"
     backend:
@@ -172,7 +172,7 @@ spec:
           emptyDir: {}
       persistence:
         size: 20Gi
-        storageClass: ${CLUSTER_STORAGE_BLOCK_HDD}
+        storageClass: ${CLUSTER_STORAGE_NFS}
     monitoring:
       dashboards:
         annotations:
