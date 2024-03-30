@@ -22,7 +22,7 @@
         resources Ingress Service
         fallthrough ${SECRET_DOMAIN}
     }
-    forward ${SECRET_DOMAIN} tls://16c562.dns.nextdns.io {
+    forward ${SECRET_DOMAIN} tls://45.90.28.211 tls://45.90.30.211 {
     }
     cache 30
     loop
