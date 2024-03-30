@@ -11,6 +11,7 @@ resources:
   - ./cloudnative-pg-charts.yaml
   - ./csi-driver-nfs.yaml
   - ./external-secrets-charts.yaml
+  - ./factorio-charts.yaml
   - ./gate-charts.yaml
   - ./grafana-charts.yaml
   - ./hajimari-charts.yaml
