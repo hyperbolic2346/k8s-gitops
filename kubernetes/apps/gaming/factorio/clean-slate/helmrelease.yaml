@@ -24,7 +24,7 @@ spec:
       # Container image pull policy
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
-      tag: 1.1.104
+      tag: 1.1.107
 
     service:
       type: LoadBalancer
