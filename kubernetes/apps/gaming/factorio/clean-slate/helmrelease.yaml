@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: clean-slate
@@ -24,10 +24,11 @@ spec:
       # Container image pull policy
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
-      tag: 1.1.104
+      tag: 1.1.107
     envFrom:
       - secretRef:
           name: factorio-secret
+
     service:
       type: LoadBalancer
       port: 34197
