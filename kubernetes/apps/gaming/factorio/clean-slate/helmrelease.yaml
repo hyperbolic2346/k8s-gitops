@@ -25,7 +25,9 @@ spec:
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
       tag: 1.1.104
-
+    envFrom:
+      - secretRef:
+          name: factorio-secret
     service:
       type: LoadBalancer
       port: 34197
