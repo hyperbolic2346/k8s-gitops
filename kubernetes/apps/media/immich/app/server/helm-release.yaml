@@ -10,12 +10,12 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -70,7 +70,7 @@ spec:
                 cpu: 250m
                 memory: 256Mi
               limits:
-                memory: 1Gi
+                memory: 2Gi
     service:
       main:
         ports:
