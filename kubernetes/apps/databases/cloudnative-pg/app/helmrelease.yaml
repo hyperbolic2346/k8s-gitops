@@ -27,3 +27,8 @@ spec:
   values:
     crds:
       create: true
+    webhook:
+      livenessProbe:
+        initialDelaySeconds: 15
+      readinessProbe:
+        initialDelaySeconds: 15
