@@ -61,7 +61,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.102.3
+              tag: v1.103.1
             args:
               - ./start-server.sh
             envFrom: *envFrom
