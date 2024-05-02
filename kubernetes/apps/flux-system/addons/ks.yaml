@@ -68,7 +68,7 @@ spec:
   prune: true
   path: ./kubernetes/apps/flux-system/addons/capacitor/app
   sourceRef:
-    kind: GITRepository
+    kind: GitRepository
     name: k8s-gitops
   postBuild:
     substitute:
