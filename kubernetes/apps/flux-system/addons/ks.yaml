@@ -54,16 +54,22 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: capacitor
+  name: &app capacitor
   namespace: flux-system
 spec:
   targetNamespace: flux-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   interval: 1h
   retryInterval: 2m
   timeout: 5m
   wait: true
   prune: true
-  path: "./"
+  path: ./kubernetes/apps/flux-system/addons/capacitor/app
   sourceRef:
-    kind: OCIRepository
-    name: capacitor
+    kind: GITRepository
+    name: k8s-gitops
+  postBuild:
+    substitute:
+      APP: *app
