@@ -32,7 +32,7 @@ jobs:
           password: "${{ steps.generate-token.outputs.token }}"
 
       - name: Diff Resources
-        uses: allenporter/flux-local/action/diff@fda7a951ed2249b11ade013ff099f302c98335f3 # 5.1.0
+        uses: allenporter/flux-local/action/diff@3c01f097df9a3733f956040016b693ae614653ce # 5.2.0
         id: diff
         with:
           live-branch: master
